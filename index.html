@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0F0E1A" />
+<script>
+  /* Apply saved theme synchronously to avoid flash */
+  try{
+    var s = JSON.parse(localStorage.getItem('godsmedicine_v1') || '{}');
+    var t = (s && s.theme === 'light') ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  }catch(e){}
+</script>
+<meta name="description" content="God's Medicine — Ordonnance divine de guérison en 14 jours" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="God's Medicine" />
+<title>God's Medicine — Ordonnance divine</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   GOD'S MEDICINE — Design System
+   ============================================================ */
+:root{
+  /* === DARK THEME (default) === */
+  --bg-deep:#0F0E1A;
+  --bg-card:#1C1B2E;
+  --bg-card-2:#242338;
+  --bg-input:#2A2940;
+  --border-c:rgba(255,255,255,0.08);
+  --border-c2:rgba(255,255,255,0.15);
+
+  --ink:#E8E5DD;
+  --ink-soft:#9A97A0;
+  --verse-gray:#C0BDB5;
+  --key-color:#F0C050;
+
+  /* Brand palette — stable across themes (used as backgrounds) */
+  --navy:#0D2340;
+  --navy-soft:#1A3358;
+  --gold:#C49A2A;
+  --gold-light:#E8C96A;
+  --cream:#F7F3EC;             /* light foreground used on navy/gold buttons */
+
+  /* Theme-dependent accents */
+  --gold-dark:#F0C050;          /* in dark = bright gold (labels) */
+  --teal:#2DD4A0;
+  --coral:#F08060;
+  --morning:#F0A830;
+  --noon:#E8C96A;
+  --evening:#7B9FF0;
+
+  /* Emphasis text color (was --navy; now theme-aware) */
+  --brand-fg:#E8C96A;
+
+  /* Surface aliases — old names map to themed surfaces */
+  --cream-2:var(--bg-card);
+  --parchment:var(--bg-card-2);
+  --parchment-2:var(--border-c2);
+
+  /* Honey tints used in highlight backgrounds (selected option, confession) */
+  --honey-1:#3a2f15;
+  --honey-2:#2a2410;
+  --honey-border:rgba(240,192,80,.32);
+
+  --shadow-sm:0 2px 8px rgba(0,0,0,.45);
+  --shadow-md:0 6px 24px rgba(0,0,0,.55);
+  --shadow-lg:0 16px 48px rgba(0,0,0,.7);
+
+  --r-sm:8px; --r-md:14px; --r-lg:22px;
+  --tx:cubic-bezier(.22,.61,.36,1);
+}
+[data-theme="light"]{
+  --bg-deep:#F7F3EC;
+  --bg-card:#FFFFFF;
+  --bg-card-2:#FBF8F2;
+  --bg-input:#EDE4D3;
+  --border-c:rgba(0,0,0,0.08);
+  --border-c2:rgba(0,0,0,0.15);
+
+  --ink:#1A1208;
+  --ink-soft:#5A4E3C;
+  --verse-gray:#6B6050;
+  --key-color:#0D2340;
+
+  --gold-dark:#7B5D10;
+  --teal:#0F5C47;
+  --coral:#8B3A2A;
+  --morning:#E8A020;
+  --noon:#C49A2A;
+  --evening:#2A4A8B;
+
+  --brand-fg:#0D2340;
+
+  --cream-2:#FBF8F2;
+  --parchment:#EDE4D3;
+  --parchment-2:#E2D6BD;
+
+  --honey-1:#fbf3df;
+  --honey-2:#f4e7c4;
+  --honey-border:rgba(196,154,42,.35);
+
+  --shadow-sm:0 2px 8px rgba(13,35,64,.08);
+  --shadow-md:0 6px 24px rgba(13,35,64,.12);
+  --shadow-lg:0 16px 48px rgba(13,35,64,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{font-size:16px;}
+html,body{height:100%;}
+body{
+  font-family:'Lato',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-weight:400;
+  color:var(--ink);
+  background:var(--bg-deep);
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(232,201,106,.05), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(13,35,64,.18), transparent 60%);
+  background-attachment:fixed;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:contain;
+  transition:background .3s ease, color .3s ease;
+}
+body::before{display:none;}
+[data-theme="light"] body{
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(196,154,42,.06), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(13,35,64,.05), transparent 60%);
+}
+[data-theme="light"] body::before{
+  display:block;
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.45  0 0 0 0 0.30  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-thumb{background:rgba(13,35,64,.18);border-radius:6px;}
+
+/* Typography */
+h1,h2,h3,h4,.serif{font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:.005em;}
+.verse{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;}
+.key{color:var(--key-color);font-weight:700;font-style:normal;}
+
+/* Layout */
+.app{
+  position:relative;z-index:1;
+  max-width:520px;margin:0 auto;min-height:100vh;min-height:100dvh;
+  padding:0 0 96px 0;
+  display:flex;flex-direction:column;
+}
+.screen{display:none;flex:1;padding:24px 20px 32px;animation:fadeUp .35s var(--tx) both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.stagger > *{animation:fadeUp .45s var(--tx) both;}
+.stagger > *:nth-child(1){animation-delay:.05s;}
+.stagger > *:nth-child(2){animation-delay:.13s;}
+.stagger > *:nth-child(3){animation-delay:.21s;}
+.stagger > *:nth-child(4){animation-delay:.29s;}
+.stagger > *:nth-child(5){animation-delay:.37s;}
+.stagger > *:nth-child(6){animation-delay:.45s;}
+
+/* Header bar */
+.topbar{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 4px 18px;
+}
+.topbar .back{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:50%;
+  background:var(--cream-2);border:1px solid var(--parchment-2);
+  color:var(--brand-fg);cursor:pointer;font-size:18px;
+}
+.topbar .title{
+  font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.15rem;color:var(--brand-fg);
+  letter-spacing:.02em;
+}
+.topbar .spacer{flex:1;}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Lato',sans-serif;font-weight:700;letter-spacing:.04em;
+  padding:14px 22px;border-radius:var(--r-md);border:none;cursor:pointer;
+  transition:transform .2s var(--tx), box-shadow .2s var(--tx), background .2s;
+  font-size:.92rem;text-transform:uppercase;
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{
+  background:linear-gradient(180deg,var(--navy-soft),var(--navy));
+  color:var(--cream);box-shadow:var(--shadow-md);
+}
+.btn-primary:hover{box-shadow:var(--shadow-lg);}
+.btn-gold{
+  background:linear-gradient(180deg,var(--gold-light),var(--gold));
+  color:#0D2340;box-shadow:0 6px 16px rgba(196,154,42,.35);
+}
+.btn-ghost{
+  background:transparent;color:var(--brand-fg);
+  border:1px solid var(--parchment-2);
+}
+.btn-block{display:flex;width:100%;}
+.btn-sm{padding:9px 14px;font-size:.78rem;}
+
+/* Card */
+.card{
+  background:var(--cream-2);
+  border:1px solid var(--parchment-2);
+  border-radius:var(--r-lg);
+  padding:22px 20px;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+}
+.card.parchment{
+  background:linear-gradient(180deg,var(--cream-2),var(--parchment));
+}
+.card-pad-lg{padding:28px 22px;}
+.divider{
+  height:1px;background:linear-gradient(90deg,transparent,var(--parchment-2),transparent);
+  margin:18px 0;
+}
+.gold-line{
+  height:2px;width:60px;
+  background:linear-gradient(90deg,var(--gold-light),var(--gold-dark));
+  border-radius:2px;margin:8px 0 14px;
+}
+
+/* Pill */
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:999px;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  background:var(--parchment);color:var(--brand-fg);
+  border:1px solid var(--parchment-2);
+}
+.pill.gold{background:rgba(196,154,42,.14);color:var(--gold-dark);border-color:rgba(196,154,42,.3);}
+.pill.teal{background:rgba(15,92,71,.1);color:var(--teal);border-color:rgba(15,92,71,.25);}
+.pill.morning{background:rgba(232,160,32,.14);color:var(--morning);border-color:rgba(232,160,32,.3);}
+.pill.noon{background:rgba(196,154,42,.14);color:var(--gold-dark);border-color:rgba(196,154,42,.3);}
+.pill.evening{background:rgba(42,74,139,.12);color:var(--evening);border-color:rgba(42,74,139,.3);}
+
+/* ===== Module 1 — Home ===== */
+.splash{
+  text-align:center;padding:36px 12px 20px;
+}
+.logo-orb{
+  width:122px;height:122px;margin:8px auto 22px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 25%, #1B3866 0%, var(--navy) 65%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 18px 50px -12px rgba(13,35,64,.5), inset 0 0 0 2px rgba(196,154,42,.55);
+  position:relative;
+}
+.logo-orb::after{
+  content:'';position:absolute;inset:6px;border-radius:50%;
+  border:1px dashed rgba(232,201,106,.35);
+}
+.logo-pill{
+  width:74px;height:34px;border-radius:999px;
+  background:linear-gradient(180deg,var(--gold-light),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.25), inset 0 -2px 0 rgba(0,0,0,.1);
+  position:relative;z-index:2;
+}
+.logo-pill::before,.logo-pill::after{
+  content:'';position:absolute;background:var(--cream);border-radius:1px;
+}
+.logo-pill::before{width:14px;height:2px;}
+.logo-pill::after{width:2px;height:14px;}
+.splash h1{
+  font-size:2.4rem;font-weight:600;color:var(--brand-fg);
+  letter-spacing:.01em;margin-bottom:4px;
+}
+.splash .sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--ink-soft);font-size:1.05rem;margin-bottom:22px;
+}
+.splash .verse-quote{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.18rem;color:var(--brand-fg);
+  padding:18px 16px;border-top:1px solid var(--parchment-2);border-bottom:1px solid var(--parchment-2);
+  margin:18px 0 28px;
+}
+.splash .verse-quote .ref{
+  display:block;font-style:normal;font-family:'Lato',sans-serif;
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-dark);margin-top:8px;font-weight:700;
+}
+.action-stack{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+
+/* ===== Module 2 — Diagnostic ===== */
+.step-indicator{
+  display:flex;gap:6px;justify-content:center;margin-bottom:18px;
+}
+.step-indicator span{
+  width:32px;height:3px;border-radius:2px;background:var(--parchment-2);
+}
+.step-indicator span.active{background:var(--gold);}
+.diag-question{
+  font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:500;
+  color:var(--brand-fg);text-align:center;margin:8px 0 4px;line-height:1.25;
+}
+.diag-hint{
+  text-align:center;color:var(--ink-soft);font-style:italic;
+  font-family:'Cormorant Garamond',serif;font-size:1.02rem;margin-bottom:22px;
+}
+.option-list{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.option{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 18px;border-radius:var(--r-md);
+  background:var(--cream-2);border:1.5px solid var(--parchment-2);
+  cursor:pointer;text-align:left;
+  transition:all .25s var(--tx);
+  font-family:'Lato',sans-serif;color:var(--ink);font-size:.96rem;
+}
+.option:hover{border-color:var(--gold);background:var(--bg-card-2);}
+.option.selected{
+  border-color:var(--gold);
+  background:linear-gradient(180deg,var(--honey-1),var(--honey-2));
+  box-shadow:0 4px 14px rgba(196,154,42,.18);
+}
+.option .ico{
+  width:34px;height:34px;flex-shrink:0;border-radius:50%;
+  background:var(--parchment);display:flex;align-items:center;justify-content:center;
+  color:var(--brand-fg);font-size:1.1rem;
+}
+.option.selected .ico{background:var(--gold);color:var(--cream);}
+
+/* Reassurance */
+.reassure-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;
+  color:var(--brand-fg);text-align:center;line-height:1.2;
+}
+.verse-list{margin-top:14px;display:flex;flex-direction:column;gap:10px;}
+.verse-list li{
+  list-style:none;padding:12px 14px;
+  background:var(--cream-2);border-left:3px solid var(--gold);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--brand-fg);
+}
+.verse-list li .ref-tag{
+  font-family:'Lato',sans-serif;font-size:.68rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--gold-dark);font-weight:700;
+  display:block;margin-bottom:2px;
+}
+.heb-quote{
+  margin-top:18px;padding:18px;background:var(--parchment);border-radius:var(--r-md);
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;
+  color:var(--brand-fg);text-align:center;line-height:1.45;
+}
+
+/* ===== Module 3/4 — Pill card ===== */
+.pill-meta{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:14px;flex-wrap:wrap;
+}
+.pill-num{
+  font-family:'Cormorant Garamond',serif;font-size:1rem;
+  color:var(--ink-soft);letter-spacing:.04em;
+}
+.pill-num strong{color:var(--brand-fg);font-weight:600;}
+.pill-time-icon{font-size:1.4rem;line-height:1;}
+.pill-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;
+  color:var(--brand-fg);line-height:1.18;margin-top:4px;
+}
+.pill-subtitle{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--ink-soft);font-size:1.08rem;margin-top:2px;
+}
+.section-label{
+  font-family:'Lato',sans-serif;font-size:.85rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold-dark);font-weight:700;
+  margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.section-label::before{
+  content:'';width:18px;height:1.5px;background:var(--gold);display:inline-block;
+}
+.verse-block{
+  background:var(--bg-card-2);border:1px solid var(--parchment-2);
+  border-radius:var(--r-md);padding:18px 18px 14px;margin-bottom:8px;
+}
+.verse-block + .verse-block{margin-top:10px;}
+.verse-tag{
+  font-family:'Lato',sans-serif;font-size:.85rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--gold-dark);font-weight:700;margin-bottom:6px;
+}
+.verse-text{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;
+  color:var(--verse-gray);line-height:1.65;
+}
+.verse-ref{
+  font-family:'Lato',sans-serif;font-size:.95rem;letter-spacing:.08em;
+  color:var(--brand-fg);margin-top:10px;font-weight:700;
+}
+.legend-mini{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.92rem;color:var(--ink-soft);margin-top:10px;text-align:center;
+}
+.teaching{
+  font-size:1.1rem;color:var(--ink);line-height:1.75;
+  text-align:justify;
+}
+.teaching p + p{margin-top:10px;}
+.teaching em{color:var(--brand-fg);font-weight:500;}
+.confession{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;
+  color:var(--brand-fg);line-height:1.55;text-align:center;
+  padding:18px 16px;background:linear-gradient(180deg,var(--honey-1),var(--honey-2));
+  border-radius:var(--r-md);border:1px solid var(--honey-border);
+  margin-top:8px;
+}
+
+/* Version toggle tabs */
+.verse-tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--parchment-2);}
+.verse-tab{
+  flex:1;padding:12px 8px;text-align:center;cursor:pointer;
+  font-family:'Lato',sans-serif;font-size:.88rem;letter-spacing:.1em;
+  text-transform:uppercase;font-weight:700;color:var(--ink-soft);
+  background:transparent;border:none;transition:all .2s;position:relative;
+}
+.verse-tab.active{color:var(--gold-dark);}
+.verse-tab.active::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;
+  background:var(--gold);
+}
+.verse-panel{display:none;padding:20px 20px 16px;background:var(--bg-card-2);
+  border:1px solid var(--parchment-2);border-top:none;border-radius:0 0 var(--r-md) var(--r-md);}
+.verse-panel.active{display:block;}
+.verse-wrapper{border-radius:var(--r-md);overflow:hidden;border:1px solid var(--parchment-2);
+  border-bottom:none;margin-bottom:8px;}
+
+/* Verse browser in memorization */
+.browse-toggle{display:flex;gap:0;margin-bottom:18px;border-radius:var(--r-md);overflow:hidden;border:1.5px solid var(--parchment-2);}
+.browse-toggle button{
+  flex:1;padding:10px;border:none;cursor:pointer;font-family:'Lato',sans-serif;
+  font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  background:var(--cream-2);color:var(--ink-soft);transition:all .2s;
+}
+.browse-toggle button.active{background:var(--navy);color:var(--gold-light);}
+.verse-browser{max-height:65vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.verse-browser-item{
+  padding:18px 16px;border-bottom:1px solid var(--parchment);
+  cursor:pointer;transition:background .15s;
+}
+.verse-browser-item:hover,.verse-browser-item:active{background:rgba(196,154,42,.06);}
+.verse-browser-item .vb-ref{
+  font-family:'Lato',sans-serif;font-size:.82rem;letter-spacing:.1em;
+  font-weight:700;color:var(--brand-fg);margin-bottom:4px;
+}
+.verse-browser-item .vb-theme{
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;
+  color:var(--ink-soft);margin-bottom:8px;
+}
+.verse-browser-item .vb-text{
+  font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;
+  color:var(--verse-gray);line-height:1.6;
+}
+.verse-browser-item .vb-text .key{color:var(--key-color);font-weight:700;font-style:normal;}
+
+/* Font scale control */
+.font-scale-row{display:flex;align-items:center;gap:12px;}
+.font-scale-row button{
+  width:40px;height:40px;border-radius:50%;border:1.5px solid var(--parchment-2);
+  background:var(--cream-2);color:var(--brand-fg);font-size:1.2rem;font-weight:700;
+  cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;
+}
+.font-scale-row button:active{background:var(--parchment);}
+.font-scale-row .scale-label{
+  font-family:'Lato',sans-serif;font-size:.88rem;color:var(--brand-fg);font-weight:700;min-width:45px;text-align:center;
+}
+
+/* Pill nav */
+.pill-nav{display:flex;gap:10px;margin-top:18px;}
+.pill-nav .btn{flex:1;}
+.progress-bar{
+  height:6px;background:var(--parchment-2);border-radius:6px;overflow:hidden;
+  margin:6px 0 14px;
+}
+.progress-bar > span{
+  display:block;height:100%;background:linear-gradient(90deg,var(--gold-light),var(--gold-dark));
+  border-radius:6px;transition:width .5s var(--tx);
+}
+
+/* Day indicator on home (in-progress) */
+.day-indicator{
+  background:var(--cream-2);
+  border:1px solid var(--parchment-2);
+  border-radius:var(--r-lg);
+  padding:22px 20px;
+  box-shadow:var(--shadow-sm);
+  text-align:center;
+  margin-bottom:14px;
+}
+.day-indicator .day-title{
+  font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:600;
+  color:var(--brand-fg);line-height:1.1;
+  letter-spacing:.04em;
+}
+.day-indicator .day-title .day-total{
+  color:var(--ink-soft);font-size:1.4rem;font-weight:500;
+}
+.day-indicator .day-pills{
+  display:flex;justify-content:center;gap:8px;
+  flex-wrap:wrap;margin-top:10px;
+}
+.day-indicator .progress-bar{margin:14px 0 6px;}
+.day-indicator .day-caption{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.95rem;color:var(--ink-soft);margin-top:6px;
+}
+
+/* Intro blurb (home, before first diagnostic) */
+.intro-blurb{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.98rem;color:var(--ink-soft);
+  text-align:left;line-height:1.6;
+  padding:16px 18px;border-radius:var(--r-md);
+  background:var(--cream-2);border:1px solid var(--parchment-2);
+  margin-bottom:4px;
+}
+.intro-link{
+  display:inline-flex;align-items:center;gap:6px;
+  align-self:flex-start;
+  background:transparent;border:none;cursor:pointer;
+  font-family:'Lato',sans-serif;font-size:.85rem;font-weight:700;
+  color:var(--gold-dark);letter-spacing:.06em;
+  padding:6px 0;margin-bottom:6px;
+}
+.intro-link:hover{text-decoration:underline;}
+
+/* Pill confirmation screen */
+.pill-confirm{
+  text-align:center;padding:36px 22px;
+}
+.pill-confirm .check{
+  width:84px;height:84px;border-radius:50%;
+  background:linear-gradient(180deg,var(--gold-light),var(--gold));
+  color:#0D2340;font-size:2.6rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;
+  box-shadow:0 10px 28px rgba(196,154,42,.35);
+  animation:checkPop .5s var(--tx) both;
+}
+@keyframes checkPop{
+  0%{transform:scale(.4);opacity:0;}
+  60%{transform:scale(1.08);opacity:1;}
+  100%{transform:scale(1);}
+}
+.pill-confirm h2{
+  font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:600;
+  color:var(--brand-fg);
+}
+.pill-confirm .sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.1rem;color:var(--ink-soft);margin-top:6px;
+}
+
+/* Update banner */
+.update-banner{
+  display:none;
+  position:fixed;
+  top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:520px;
+  background:var(--navy);
+  color:var(--cream);
+  padding:12px 20px;
+  z-index:100;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-size:.88rem;
+  font-weight:700;
+  box-shadow:var(--shadow-md);
+}
+.update-banner.show{display:flex;}
+
+/* ===== Module 5 — Memorization ===== */
+.flashcard{
+  perspective:1200px;height:340px;margin:18px 0;
+  cursor:pointer;
+}
+.flashcard-inner{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;transition:transform .65s var(--tx);
+}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.flashcard-face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:var(--r-lg);padding:26px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;box-shadow:var(--shadow-md);
+}
+.flashcard-front{
+  background:linear-gradient(180deg,var(--navy-soft),var(--navy));
+  color:var(--cream);
+}
+.flashcard-front .ref-big{
+  font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;
+  color:var(--gold-light);margin-bottom:10px;
+}
+.flashcard-front .fc-context{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Lato',sans-serif;font-size:.78rem;letter-spacing:.16em;
+  text-transform:uppercase;font-weight:700;
+  color:rgba(247,243,236,.78);margin-bottom:14px;
+}
+.flashcard-front .fc-context .fc-dot{opacity:.6;}
+.flashcard-front .fc-theme{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:rgba(247,243,236,.85);font-size:1.02rem;margin-top:6px;
+}
+.flashcard-front .tap{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:rgba(247,243,236,.65);font-size:.95rem;margin-top:18px;
+}
+.flashcard-back{
+  background:var(--cream-2);transform:rotateY(180deg);
+  border:1px solid var(--parchment-2);
+}
+.flashcard-back .verse{
+  font-size:1.08rem;color:var(--ink-soft);line-height:1.5;
+}
+.flashcard-back .ref{
+  font-family:'Lato',sans-serif;font-size:.72rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold-dark);margin-top:14px;font-weight:700;
+}
+.memo-actions{display:flex;gap:8px;}
+.memo-actions .btn{flex:1;padding:12px 8px;font-size:.72rem;}
+.memo-stats{
+  display:flex;justify-content:space-around;text-align:center;margin-top:14px;
+  padding:14px 8px;background:var(--cream-2);border-radius:var(--r-md);
+  border:1px solid var(--parchment-2);
+}
+.memo-stats .stat .num{
+  font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:var(--brand-fg);
+}
+.memo-stats .stat .lbl{
+  font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+
+/* ===== Module 6 — Settings ===== */
+.setting-row{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--parchment-2);
+}
+.setting-row:last-child{border-bottom:none;}
+.setting-row .label{font-weight:700;color:var(--brand-fg);font-size:.95rem;}
+.setting-row .desc{font-size:.82rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;font-style:italic;margin-top:2px;}
+.time-input{
+  font-family:'Lato',sans-serif;font-size:1rem;padding:8px 12px;
+  border:1.5px solid var(--parchment-2);border-radius:var(--r-sm);
+  background:var(--cream-2);color:var(--brand-fg);font-weight:700;
+}
+/* Toggle */
+.toggle{
+  position:relative;width:46px;height:26px;flex-shrink:0;
+  background:var(--parchment-2);border-radius:99px;cursor:pointer;
+  transition:background .25s var(--tx);
+}
+.toggle::after{
+  content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:var(--cream);box-shadow:0 1px 3px rgba(0,0,0,.18);
+  transition:left .25s var(--tx);
+}
+.toggle.on{background:var(--gold);}
+.toggle.on::after{left:23px;}
+.disclaimer{
+  margin-top:18px;padding:12px 14px;background:var(--parchment);
+  border-radius:var(--r-sm);font-size:.78rem;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--ink-soft);line-height:1.5;
+}
+
+/* Bottom nav */
+.bottom-nav{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;
+  width:100%;max-width:520px;
+  background:var(--bg-card);backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-top:1px solid var(--border-c);
+  display:flex;justify-content:space-around;
+  padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+  z-index:50;
+}
+.nav-btn{
+  flex:1;background:none;border:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 4px;color:var(--ink-soft);font-size:.66rem;
+  letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+  font-family:'Lato',sans-serif;
+}
+.nav-btn .nav-ico{font-size:1.2rem;line-height:1;}
+.nav-btn.active{color:var(--gold-dark);}
+.nav-btn.active .nav-ico{transform:scale(1.1);}
+
+/* Toast */
+.toast{
+  position:fixed;left:50%;bottom:96px;transform:translateX(-50%);
+  background:var(--navy);color:var(--cream);
+  padding:12px 18px;border-radius:99px;font-size:.85rem;
+  box-shadow:var(--shadow-lg);z-index:100;
+  opacity:0;transition:opacity .3s, transform .3s;pointer-events:none;
+  font-weight:600;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-8px);}
+
+/* Modal */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.65);
+  display:none;align-items:center;justify-content:center;z-index:200;
+  padding:20px;backdrop-filter:blur(4px);
+}
+[data-theme="light"] .modal-backdrop{background:rgba(13,35,64,.55);}
+.modal-backdrop.show{display:flex;animation:fadeIn .25s var(--tx);}
+.modal{
+  background:var(--cream-2);border-radius:var(--r-lg);
+  padding:24px;max-width:380px;width:100%;
+  box-shadow:var(--shadow-lg);
+}
+.modal h3{font-size:1.4rem;color:var(--brand-fg);font-weight:600;margin-bottom:8px;}
+.modal p{color:var(--ink-soft);margin-bottom:18px;font-size:.95rem;}
+.modal-actions{display:flex;gap:10px;}
+.modal-actions .btn{flex:1;}
+
+/* Responsive */
+@media (min-width:600px){
+  .verse-block-row{}
+}
+@media (max-width:380px){
+  .splash h1{font-size:2rem;}
+  .pill-title{font-size:1.45rem;}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============================================================
+       MODULE 1 — HOME / SPLASH
+       ============================================================ -->
+  <main id="screen-home" class="screen active">
+    <div class="splash stagger">
+      <div class="logo-orb" aria-hidden="true">
+        <div class="logo-pill"></div>
+      </div>
+      <h1>God's Medicine</h1>
+      <p class="sub">Ordonnance divine de guérison</p>
+      <blockquote class="verse-quote">
+        « Mon peuple périt faute de connaissance »
+        <span class="ref">Osée 4:6</span>
+      </blockquote>
+      <div class="action-stack" id="home-actions">
+        <!-- buttons injected by JS based on progress -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       MODULE 2 — DIAGNOSTIC
+       ============================================================ -->
+  <main id="screen-diagnostic" class="screen">
+    <div class="topbar">
+      <button class="back" data-nav="home" aria-label="Retour">‹</button>
+      <span class="title">Diagnostic initial</span>
+      <span class="spacer"></span>
+    </div>
+    <div class="step-indicator" id="diag-steps" aria-hidden="true">
+      <span class="active"></span><span></span><span></span>
+    </div>
+    <div id="diag-content"></div>
+  </main>
+
+  <!-- ============================================================
+       MODULE 3/4 — TREATMENT & CONVALESCENCE (single template)
+       ============================================================ -->
+  <main id="screen-pill" class="screen">
+    <div class="topbar">
+      <button class="back" data-nav="home" aria-label="Retour">‹</button>
+      <span class="title" id="pill-phase-title">Traitement</span>
+      <span class="spacer"></span>
+      <button class="btn btn-ghost btn-sm" data-nav="memorization">Versets</button>
+    </div>
+    <div class="progress-bar"><span id="pill-progress" style="width:0%"></span></div>
+    <div id="pill-content"></div>
+  </main>
+
+  <!-- ============================================================
+       MODULE 5 — MEMORIZATION
+       ============================================================ -->
+  <main id="screen-memorization" class="screen">
+    <div class="topbar">
+      <button class="back" data-nav="home" aria-label="Retour">‹</button>
+      <span class="title">Mémorisation</span>
+      <span class="spacer"></span>
+    </div>
+    <div id="memo-content"></div>
+  </main>
+
+  <!-- ============================================================
+       MODULE 6 — SETTINGS
+       ============================================================ -->
+  <main id="screen-settings" class="screen">
+    <div class="topbar">
+      <button class="back" data-nav="home" aria-label="Retour">‹</button>
+      <span class="title">Paramètres</span>
+      <span class="spacer"></span>
+    </div>
+    <div id="settings-content"></div>
+  </main>
+
+  <!-- ============================================================
+       MODULE 7 — ABOUT
+       ============================================================ -->
+  <main id="screen-about" class="screen">
+    <div class="topbar">
+      <button class="back" data-nav="settings" aria-label="Retour">‹</button>
+      <span class="title">À propos</span>
+      <span class="spacer"></span>
+    </div>
+    <div id="about-content"></div>
+  </main>
+
+  <!-- Update banner -->
+  <div class="update-banner" id="update-banner">
+    <span>Une mise à jour est disponible</span>
+    <button class="btn btn-gold btn-sm" id="update-btn">Mettre à jour</button>
+  </div>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-btn active" data-nav="home"><span class="nav-ico">⌂</span><span>Accueil</span></button>
+    <button class="nav-btn" data-nav="pill"><span class="nav-ico">◉</span><span>Comprimé</span></button>
+    <button class="nav-btn" data-nav="memorization"><span class="nav-ico">✦</span><span>Versets</span></button>
+    <button class="nav-btn" data-nav="settings"><span class="nav-ico">⚙</span><span>Paramètres</span></button>
+  </nav>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h3 id="modal-title"></h3>
+    <p id="modal-body"></p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-cancel">Annuler</button>
+      <button class="btn btn-primary" id="modal-confirm">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   GOD'S MEDICINE — Application Logic
+   NOTE — Verse texts:
+   All LSG21 and Le Semeur (SEM) verse texts below are reasonable
+   approximations. Both translations are under copyright; please
+   replace with the official text where [À VÉRIFIER] appears.
+   ============================================================ */
+
+/* ---------- VERSE DATA ---------- */
+const VERSES_TREATMENT = [
+  /* DAY 1 — Jéhovah-Rapha */
+  { id:'t01', day:1, time:'morning', dayTheme:'Jéhovah-Rapha — Dieu est Guérisseur par nature', sub:'Le caractère même de Dieu', ref:'Actes 10:38',
+    lsg21:`Vous savez comment Dieu a oint du Saint-Esprit et de puissance Jésus de Nazareth, qui allait de lieu en lieu en faisant le bien et en <span class="key">guérissant tous ceux qui étaient sous l'emprise du diable</span>, car Dieu était avec lui.`,
+    sem:`Vous savez comment Dieu a oint Jésus de Nazareth en répandant sur lui le Saint-Esprit et la puissance. Il allait de lieu en lieu, faisant le bien et <span class="key">guérissant tous ceux qui étaient tombés sous le pouvoir du diable</span>, car Dieu était avec lui.`,
+    teaching:`Pierre, parlant chez Corneille, résume tout le ministère terrestre de Jésus en une seule phrase. Et ce résumé est saisissant : Jésus <em>guérissait tous ceux qui étaient sous l'emprise du diable</em>. Le mot grec <em>katadunasteuomenous</em> signifie « tyrannisés, opprimés ». La maladie n'est donc pas neutre — elle est présentée comme une tyrannie de l'ennemi.\n\nDerek Prince insistait sur ce point : si Jésus guérissait <em>tous</em>, alors la guérison n'est pas l'exception mais la norme du Royaume. Et puisque Jésus est « le même hier, aujourd'hui et éternellement » (Hébreux 13:8), ce qu'Il a fait pour les foules de Galilée, Il le fait encore aujourd'hui pour celui qui s'approche par la foi.`,
+    confession:`Jésus est le même hier, aujourd'hui et éternellement. Comme Il a guéri tous ceux qui venaient à Lui, Il me guérit aujourd'hui. Je reçois sa puissance dans mon corps.` },
+
+  { id:'t02', day:1, time:'noon', dayTheme:'Jéhovah-Rapha — Dieu est Guérisseur par nature', sub:'Le nom révélé', ref:'Exode 15:26',
+    lsg21:`Si tu écoutes attentivement la voix de l'Éternel, ton Dieu, si tu fais ce qui est droit à ses yeux, si tu prêtes l'oreille à ses commandements et si tu obéis à toutes ses prescriptions, alors je ne te frapperai d'aucune des maladies dont j'ai frappé les Égyptiens, car <span class="key">je suis l'Éternel qui te guérit</span>.`,
+    sem:`Si tu écoutes attentivement l'Éternel ton Dieu, si tu fais ce qui est droit à ses yeux, si tu prêtes l'oreille à ses commandements et si tu obéis à toutes ses lois, je ne t'infligerai aucune des maladies que j'ai infligées aux Égyptiens, car <span class="key">je suis l'Éternel qui te guérit</span>.`,
+    teaching:`À Mara, devant les eaux amères, Dieu se révèle par un nom nouveau : <em>Jéhovah-Rapha</em>, « l'Éternel qui te guérit ». Ce n'est pas un titre occasionnel — c'est l'un des sept noms rédempteurs par lesquels Dieu se présente à son peuple.\n\nLe verbe hébreu <em>rapha</em> signifie « guérir, restaurer, raccommoder ». Dieu ne dit pas « je peux guérir » mais <em>je suis</em> celui qui guérit. La guérison fait partie de qui Il est, comme l'amour ou la sainteté. Demander à Dieu de guérir, c'est lui demander d'être ce qu'Il est. Il ne change pas de nature selon les circonstances.`,
+    confession:`Tu es Jéhovah-Rapha, l'Éternel qui me guérit. Ton nom même est ma garantie. Je m'appuie sur qui Tu es, pas sur ce que je ressens.` },
+
+  { id:'t03', day:1, time:'evening', dayTheme:'Jéhovah-Rapha — Dieu est Guérisseur par nature', sub:'La constance du Père', ref:'Jacques 1:17',
+    lsg21:`<span class="key">Tout don excellent et tout cadeau parfait viennent d'en haut</span>, ils descendent du Père des lumières, en qui il n'y a ni changement ni ombre de variation.`,
+    sem:`Tous les bienfaits que nous recevons et <span class="key">tout don parfait nous viennent d'en haut</span>, du Père qui est la source de toute lumière et en qui il n'y a ni changement ni ombre due à des variations.`,
+    teaching:`Jacques pose un axiome simple et tranchant : <em>tout</em> bon don descend du Père. Pas certains. Tous. Et il ajoute : il n'y a en Lui « ni changement ni ombre de variation » — littéralement, aucune éclipse.\n\nKenneth Hagin tirait de ce verset une conséquence radicale : si la maladie était parfois envoyée par Dieu pour nous éduquer, alors Dieu <em>changerait</em> selon les jours — un coup guérisseur, un coup destructeur. Or Jacques dit l'inverse. Dieu est constant. La maladie ne descend pas du Père des lumières. La guérison, oui. Cette clarté libère la foi : on cesse de demander à Dieu s'Il <em>veut</em> guérir, et on commence à recevoir ce qu'Il a déjà donné.`,
+    confession:`Tout don parfait vient de mon Père. Sa volonté pour moi est bonne, parfaite, lumineuse. Je reçois sa guérison comme un cadeau qui m'appartient déjà.` },
+
+  /* DAY 2 — L'Expiation */
+  { id:'t04', day:2, time:'morning', dayTheme:'L\'Expiation — Christ a porté nos maladies', sub:'La prophétie d\'Ésaïe', ref:'Ésaïe 53:4-5',
+    lsg21:`Cependant, ce sont nos souffrances qu'il a portées, c'est de nos douleurs qu'il s'est chargé. Et nous, nous l'avons considéré comme puni, frappé par Dieu et humilié. Mais lui, il était blessé à cause de nos transgressions, brisé à cause de nos fautes ; le châtiment qui nous donne la paix est tombé sur lui, et <span class="key">c'est par ses blessures que nous sommes guéris</span>.`,
+    sem:`Pourtant, <span class="key">il a porté nos maladies</span>, et il s'est chargé de nos douleurs. Nous, nous le pensions atteint d'une plaie infligée par Dieu, frappé et humilié. Mais c'est pour nos péchés qu'il a été transpercé, c'est pour nos fautes qu'il a été brisé. Le châtiment qui nous donne la paix est retombé sur lui et <span class="key">c'est par ses blessures que nous sommes guéris</span>.`,
+    teaching:`Le mot hébreu traduit ici par « souffrances » est <em>kholee</em> — qui signifie littéralement <em>maladies</em> physiques. Et le verbe « porté » est <em>nasa</em> : porter le poids d'autrui à sa place, comme le bouc émissaire porte le péché.\n\nDerek Prince soulignait que ce verset est central : Christ a porté nos péchés <em>et</em> nos maladies dans la même expiation, avec le même verbe. Si nous acceptons que sa croix nous rachète du péché, par la même logique elle nous rachète de la maladie. Les « meurtrissures » (<em>habburah</em>) désignent précisément les marques laissées par les coups du fouet sur son dos — c'est par ces blessures-là, infligées avant même la croix, que la guérison physique nous est acquise.`,
+    confession:`Christ a porté mes maladies dans son corps. Par ses meurtrissures, je suis guéri. Ce qu'Il a porté, je n'ai plus à le porter.` },
+
+  { id:'t05', day:2, time:'noon', dayTheme:'L\'Expiation — Christ a porté nos maladies', sub:'L\'accomplissement', ref:'Matthieu 8:16-17',
+    lsg21:`Le soir venu, on amena auprès de Jésus de nombreux démoniaques. Il chassa les esprits par sa parole et <span class="key">il guérit tous les malades</span>, afin que s'accomplisse ce que le prophète Ésaïe avait annoncé : <span class="key">Il a pris nos faiblesses et il s'est chargé de nos maladies</span>.`,
+    sem:`Le soir venu, on lui amena beaucoup de personnes tourmentées par des démons. D'un mot, il chassa ces esprits mauvais et <span class="key">il guérit tous les malades</span>. Ainsi s'accomplit cette parole du prophète Ésaïe : <span class="key">Il a pris nos infirmités et s'est chargé de nos maladies</span>.`,
+    teaching:`Matthieu, sous l'inspiration du Saint-Esprit, fait une chose extraordinaire : il cite Ésaïe 53 — le grand chapitre de l'expiation — et l'applique <em>aux guérisons physiques</em>. Pour Matthieu, il n'y a aucune ambiguïté : la prophétie ne parle pas seulement du salut de l'âme, mais aussi de la guérison du corps.\n\nOral Roberts insistait sur ce verset : « Il guérit <em>tous</em> les malades. » Pas certains. Pas les plus dignes. Tous ceux qui venaient. Et chaque guérison accomplissait Ésaïe 53. Si donc vous venez à Lui aujourd'hui, c'est sur la même base, dans le même accomplissement.`,
+    confession:`Jésus a déjà pris mes infirmités. Sa croix est l'accomplissement de la promesse. Je ne demande pas — je reçois ce qui m'a été acquis.` },
+
+  { id:'t06', day:2, time:'evening', dayTheme:'L\'Expiation — Christ a porté nos maladies', sub:'Au passé, déjà accompli', ref:'1 Pierre 2:24',
+    lsg21:`Lui qui a porté nos péchés en son corps sur le bois, afin que, morts par rapport aux péchés, nous vivions pour la justice. C'est <span class="key">par ses blessures que vous avez été guéris</span>.`,
+    sem:`Il a pris nos péchés sur lui et les a portés dans son corps, sur la croix, afin qu'étant morts pour le péché, nous menions une vie juste. Oui, <span class="key">c'est par ses blessures que vous avez été guéris</span>.`,
+    teaching:`Pierre fait une chose grammaticalement décisive : il prend la prophétie d'Ésaïe (« nous <em>sommes</em> guéris ») et la met au <em>passé accompli</em> : « vous <em>avez été</em> guéris ». En grec, <em>iathète</em> est un aoriste passif — un fait achevé.\n\nKenneth Hagin appelait cela « la grammaire de la rédemption ». La guérison n'est pas quelque chose à conquérir dans le futur — c'est quelque chose que Christ a déjà accompli dans le passé. Notre rôle n'est pas de la <em>produire</em>, mais de la <em>recevoir</em> par la foi. La phrase ne dit pas « vous serez guéris » ou « vous pouvez être guéris » : elle dit <em>vous avez été guéris</em>. Le travail est fait. Reste à le saisir.`,
+    confession:`Par ses meurtrissures, j'ai été guéri. Au passé. C'est accompli. Je marche dans une guérison qui m'appartient déjà en Christ.` },
+
+  /* DAY 3 — La Foi */
+  { id:'t07', day:3, time:'morning', dayTheme:'La Foi — Croire avant de voir', sub:'L\'origine de la foi', ref:'Romains 10:17',
+    lsg21:`Ainsi <span class="key">la foi vient de ce qu'on entend</span>, et ce qu'on entend vient de la parole de Christ.`,
+    sem:`Donc, <span class="key">la foi naît de ce que l'on entend</span>, et ce que l'on entend vient de la parole de Christ.`,
+    teaching:`Paul donne ici la mécanique fondamentale de la foi. Elle ne tombe pas du ciel, elle ne se fabrique pas par effort de volonté. Elle <em>vient</em> — par un canal précis : entendre la Parole de Christ.\n\nKenneth Hagin disait : « La foi pour la guérison vient en entendant la Parole sur la guérison. » C'est exactement ce que vous faites en ce moment. Chaque verset que vous méditez dans cette ordonnance n'est pas un simple texte spirituel : c'est la <em>matière première</em> dont la foi se fait. Plus vous entendez, plus la foi grandit. Et la foi est le moyen par lequel la guérison déjà acquise devient votre expérience concrète. Continuez à entendre, à lire, à confesser — la foi monte.`,
+    confession:`Ma foi grandit chaque fois que j'entends la Parole de Dieu sur la guérison. Je continue d'entendre, et ma foi s'élève.` },
+
+  { id:'t08', day:3, time:'noon', dayTheme:'La Foi — Croire avant de voir', sub:'Recevoir au présent', ref:'Marc 11:24',
+    lsg21:`C'est pourquoi je vous le dis : tout ce que vous demanderez en priant, <span class="key">croyez que vous l'avez reçu</span> et cela vous sera accordé.`,
+    sem:`C'est pourquoi je vous le déclare : tout ce que vous demandez dans vos prières, <span class="key">croyez que vous l'avez obtenu</span> et cela vous sera accordé.`,
+    teaching:`Jésus donne ici le principe le plus déroutant et le plus puissant de la foi : croire qu'on a déjà reçu — <em>avant</em> de voir le résultat. Le grec dit littéralement : « croyez que vous avez reçu » — au passé.\n\nLa séquence du monde naturel est : voir, puis croire. La séquence du Royaume est : croire, puis voir. C'est l'inverse. Et c'est précisément ce qui caractérise la foi.\n\nDerek Prince résumait : « La foi est l'organe par lequel nous percevons la réalité invisible avant qu'elle ne devienne visible. » Ne dites pas « je veux être guéri ». Dites « je <em>suis</em> guéri en Christ », car c'est la vérité éternelle. Et ce que vous tenez dans le monde invisible finira par se manifester dans le visible.`,
+    confession:`Je crois que j'ai reçu ma guérison. Avant de la voir, je la confesse. Avant de la sentir, je l'ai déjà reçue par la foi.` },
+
+  { id:'t09', day:3, time:'evening', dayTheme:'La Foi — Croire avant de voir', sub:'La Parole : médicament', ref:'Proverbes 4:20-22',
+    lsg21:`Mon fils, sois attentif à mes paroles, prête l'oreille à mes discours ! Qu'ils ne s'éloignent pas de tes yeux ! Garde-les au fond de ton cœur ! En effet, <span class="key">elles sont vie pour ceux qui les trouvent</span>, elles apportent <span class="key">la guérison à tout leur corps</span>.`,
+    sem:`Mon fils, sois attentif à mes paroles, prête l'oreille à mes discours, qu'ils restent constamment sous ton regard. Garde-les au fond de ton cœur, car ils <span class="key">apportent la vie à ceux qui les trouvent</span>, et la <span class="key">santé à tout leur corps</span>.`,
+    teaching:`Salomon parle des paroles de sagesse comme d'un véritable traitement médical. Le mot hébreu pour « guérison » ici est <em>marpe</em> — qui signifie aussi « médicament, remède ». Les paroles de Dieu sont littéralement le <em>remède</em> du corps.\n\nIl y a une posologie précise dans le verset : <em>écouter</em>, <em>regarder</em> (« qu'elles ne s'éloignent pas de tes yeux »), <em>garder dans le cœur</em>. Trois prises quotidiennes — exactement comme une ordonnance.\n\nC'est précisément le principe de cette application : prendre la Parole comme on prend un médicament — régulièrement, fidèlement, jour après jour. Le remède ne fonctionne pas à dose unique. Il agit dans la durée.`,
+    confession:`Les paroles de Dieu sont vie pour mon corps. Je les prends régulièrement et elles apportent la santé à toutes mes cellules.` },
+
+  /* DAY 4 — Deux courants de guérison */
+  { id:'t10', day:4, time:'morning', dayTheme:'Deux courants — comment la guérison vient', sub:'L\'onction des anciens', ref:'Jacques 5:14-15',
+    lsg21:`Quelqu'un parmi vous est-il malade ? Qu'il appelle les anciens de l'Église et que ceux-ci prient pour lui en lui appliquant de l'huile au nom du Seigneur. <span class="key">La prière de la foi sauvera le malade</span> et le Seigneur le relèvera.`,
+    sem:`L'un de vous est-il malade ? Qu'il appelle les responsables de l'Église, qui prieront pour lui, après lui avoir fait une onction d'huile au nom du Seigneur. <span class="key">La prière faite avec foi obtiendra la guérison du malade</span> et le Seigneur le relèvera.`,
+    teaching:`Jacques décrit le premier des deux courants : la prière en accord avec d'autres croyants. Quand votre propre foi vacille — et cela arrive — il y a quelque chose de précieux à laisser des frères et sœurs porter le fardeau avec vous.\n\nNotez ce que Jacques dit : ce n'est pas l'huile qui sauve, ce n'est pas l'ancien qui sauve — c'est <em>la prière de la foi</em>. L'huile est un signe extérieur de l'Esprit qui agit ; les anciens sont des canaux. Mais c'est la foi exprimée dans la prière qui libère la puissance de Dieu.\n\nNe restez pas seul dans votre combat. Identifiez des croyants qui vivent dans la foi pour la guérison, et demandez-leur de prier avec vous. Le Seigneur a prévu ce courant.`,
+    confession:`Je ne suis pas seul. Je m'entoure de la foi de mes frères. La prière faite avec foi me relève au nom de Jésus.` },
+
+  { id:'t11', day:4, time:'noon', dayTheme:'Deux courants — comment la guérison vient', sub:'La foi qui touche', ref:'Marc 5:30-34',
+    lsg21:`Jésus connut aussitôt en lui-même qu'<span class="key">une force était sortie de lui</span>. Il se retourna au milieu de la foule et dit : Qui a touché mes vêtements ? […] Mais Jésus dit à la femme : Ma fille, <span class="key">ta foi t'a sauvée ; va en paix</span>, et sois guérie de ton mal.`,
+    sem:`Aussitôt, Jésus sentit qu'<span class="key">une force était sortie de lui</span>. Il se retourna au milieu de la foule et demanda : Qui a touché mes vêtements ? […] Mais Jésus lui dit : Ma fille, <span class="key">ta foi t'a sauvée ; va en paix</span> et sois guérie de ton mal.`,
+    teaching:`C'est le second courant : la foi qui prend l'initiative. Cette femme malade depuis douze ans n'a pas attendu qu'on prie pour elle. Elle s'est dit : « Si je touche ne serait-ce que ses vêtements, je serai guérie » — et elle est passée à l'acte.\n\nDeux mots décisifs ici. <em>Dunamis</em> : la « force » qui sort de Jésus — la puissance même de Dieu. Et <em>sōzō</em> : « ta foi t'a sauvée » — le mot qui désigne aussi bien le salut que la guérison physique. Pour le grec biblique, c'est le même verbe.\n\nCette femme illustre une vérité que Hagin appelait « la foi-action » : elle a entendu parler de Jésus, elle l'a cru, et elle a posé un geste de foi. Quand vous prononcez la confession à la fin de chaque comprimé, vous faites exactement ce qu'elle a fait : vous tendez la main vers Lui.`,
+    confession:`Comme cette femme, je m'approche de Jésus avec foi. Sa puissance sort de Lui pour me toucher. Ma foi me rend en pleine santé.` },
+
+  { id:'t12', day:4, time:'evening', dayTheme:'Deux courants — comment la guérison vient', sub:'L\'imposition des mains', ref:'Marc 16:17-18',
+    lsg21:`Voici les signes qui accompagneront ceux qui auront cru : en mon nom, ils chasseront les démons ; ils parleront de nouvelles langues ; ils saisiront des serpents ; s'ils boivent quelque breuvage mortel, il ne leur fera pas de mal ; ils <span class="key">imposeront les mains aux malades, et ceux-ci seront guéris</span>.`,
+    sem:`Voici les signes qui accompagneront ceux qui auront cru : en mon nom, ils chasseront des démons, ils parleront des langues nouvelles, […] ils <span class="key">imposeront les mains à des malades et ceux-ci seront guéris</span>.`,
+    teaching:`Jésus délègue ici son ministère de guérison à <em>tous</em> les croyants — pas seulement aux apôtres. « Ceux qui auront cru » : c'est l'unique condition.\n\nL'imposition des mains est l'un des « principes élémentaires » de la foi (Hébreux 6:2). Quand un croyant rempli du Saint-Esprit pose les mains sur un malade, la puissance de Christ — la même <em>dunamis</em> qui est sortie pour la femme — s'écoule par ce contact.\n\nDerek Prince notait que Jésus dit « <em>seront</em> guéris » au futur indicatif — pas « pourraient ». C'est une promesse, pas une possibilité. Si vous avez accès à un croyant rempli de l'Esprit qui marche dans la foi pour la guérison, demandez-lui de vous imposer les mains. Et si vous l'êtes vous-même, sachez que cette autorité vous appartient pour les autres.`,
+    confession:`Je suis un croyant. Cette autorité m'appartient. Et lorsque je reçois l'imposition des mains, je suis guéri au nom de Jésus.` },
+
+  /* DAY 5 — L'Héritage légal */
+  { id:'t13', day:5, time:'morning', dayTheme:'L\'Héritage légal — racheté de la malédiction', sub:'Christ devenu malédiction', ref:'Galates 3:13',
+    lsg21:`<span class="key">Christ nous a rachetés de la malédiction</span> de la loi en devenant malédiction pour nous, puisqu'il est écrit : Maudit soit quiconque est pendu au bois.`,
+    sem:`<span class="key">Christ nous a libérés de la malédiction</span> que la loi faisait peser sur nous en prenant la malédiction sur lui, à notre place. Il est, en effet, écrit : Maudit est quiconque est pendu au bois.`,
+    teaching:`Pour comprendre la portée immense de ce verset, il faut lire Deutéronome 28. Là, Dieu énumère les bénédictions de l'obéissance — et les malédictions de la désobéissance. Et parmi ces malédictions figurent explicitement : les maladies, les épidémies, l'épuisement, l'angoisse, l'échec. Lisez vous-même.\n\nDerek Prince a fondé une grande partie de son enseignement sur ce passage. Sa thèse : Christ a été fait malédiction <em>à notre place</em>, sur le bois. Toute malédiction qui pesait sur nous — y compris la maladie — est tombée sur Lui. En conséquence, nous sommes <em>légalement</em> rachetés. Ce n'est pas une simple aide : c'est un statut juridique. Comme un esclave officiellement affranchi, vous ne devez plus rien à l'ancien maître.\n\nLa maladie n'a plus de droit sur vous. Vous avez été racheté.`,
+    confession:`Je suis racheté de toute malédiction. La maladie n'a aucun droit légal sur mon corps. Christ a tout payé sur la croix.` },
+
+  { id:'t14', day:5, time:'noon', dayTheme:'L\'Héritage légal — racheté de la malédiction', sub:'Le transfert de royaume', ref:'Colossiens 1:13-14',
+    lsg21:`<span class="key">Il nous a délivrés de la puissance des ténèbres et nous a transportés dans le royaume de son Fils bien-aimé</span>, en qui nous sommes rachetés, pardonnés de nos péchés.`,
+    sem:`<span class="key">Il nous a arrachés au pouvoir des ténèbres et nous a fait passer dans le royaume de son Fils bien-aimé</span>. C'est en lui que nous sommes délivrés, c'est-à-dire que nos péchés nous sont pardonnés.`,
+    teaching:`Paul utilise ici une image juridique romaine : celle d'une <em>déportation officielle</em> d'un royaume à un autre. Le verbe grec <em>methistēmi</em> désignait le transfert légal d'un peuple conquis vers un nouveau territoire — avec changement de citoyenneté, de lois, de roi.\n\nC'est ce qui s'est passé pour vous au moment de votre nouvelle naissance. Vous étiez dans le royaume des ténèbres, où la maladie est une donnée normale. Vous avez été <em>transféré</em> dans le royaume du Fils, où la guérison est l'état normal et la maladie une intrusion étrangère.\n\nQuand un symptôme se présente, ne réagissez plus comme un sujet du royaume de l'ennemi à qui la maladie appartient de droit. Réagissez comme un citoyen du Royaume du Fils, dans lequel la maladie n'a aucun papier. Elle peut tenter de s'imposer ; elle est en territoire étranger.`,
+    confession:`Je ne suis plus du royaume des ténèbres. Je suis citoyen du Royaume de Christ. La maladie est une intruse — elle n'a pas sa place ici.` },
+
+  { id:'t15', day:5, time:'evening', dayTheme:'L\'Héritage légal — racheté de la malédiction', sub:'Co-héritier de Christ', ref:'Romains 8:17',
+    lsg21:`Or, si nous sommes enfants, nous sommes aussi héritiers : <span class="key">héritiers de Dieu et cohéritiers de Christ</span>, si toutefois nous souffrons avec lui afin d'être aussi glorifiés avec lui.`,
+    sem:`Et puisque nous sommes enfants, nous sommes aussi <span class="key">héritiers : héritiers de Dieu et cohéritiers de Christ</span>, puisque nous souffrons avec lui pour avoir part aussi à sa gloire.`,
+    teaching:`Le mot grec est <em>sunklēronomos</em> : co-héritier. Pas héritier secondaire — héritier <em>au même titre</em> que Christ. Tout ce que le Père donne au Fils, Il le partage avec ceux qui sont en Christ.\n\nKenneth Hagin tirait de ce verset un raisonnement simple et bouleversant : si Christ n'est pas malade dans la gloire, alors la maladie ne fait pas partie de l'héritage. Si Christ est en pleine santé glorifiée, alors la santé fait partie de ce qui m'est légué.\n\nUn co-héritier ne mendie pas dans la propriété — il y vit. La guérison n'est pas une faveur exceptionnelle accordée aux super-saints. C'est une part normale de l'héritage. Vous ne demandez pas la permission — vous prenez ce qui vous est légalement reconnu.`,
+    confession:`Je suis cohéritier de Christ. Sa santé, sa vie, sa puissance font partie de mon héritage légal. Je marche dans ce qui m'appartient.` },
+
+  /* DAY 6 — Obstacles et solutions */
+  { id:'t16', day:6, time:'morning', dayTheme:'Les obstacles — et leurs solutions', sub:'L\'ignorance', ref:'Osée 4:6',
+    lsg21:`<span class="key">Mon peuple périt faute de connaissance</span>. Puisque tu as rejeté la connaissance, je te rejetterai et tu ne seras plus mon prêtre.`,
+    sem:`Oui, <span class="key">mon peuple périt faute de connaissance</span> parce que vous, les prêtres, vous avez rejeté la connaissance. Je vous rejetterai et vous n'exercerez plus mon sacerdoce.`,
+    teaching:`Dieu ne dit pas : « mon peuple périt à cause des attaques de l'ennemi » ou « à cause des circonstances ». Il dit : <em>faute de connaissance</em>. Le danger numéro un n'est pas extérieur — il est l'absence de connaissance révélée.\n\nDerek Prince racontait que beaucoup de chrétiens souffrent non parce que Dieu refuse de guérir, mais parce qu'ils ignorent ce que la croix a déjà acquis. On ne peut recevoir par la foi ce que l'on ignore. Et on ne peut résister à l'ennemi si l'on ne connaît pas ses droits.\n\nC'est pourquoi cette ordonnance fait toute la différence : elle n'est pas faite pour vous donner des pensées positives, mais pour vous transmettre la <em>connaissance</em> que Dieu lui-même a déposée dans sa Parole. Plus la connaissance grandit, plus la délivrance devient possible.`,
+    confession:`Je grandis dans la connaissance de la Parole. Je ne suis plus dans l'ignorance. Ce que Christ a acquis, je le saisis chaque jour davantage.` },
+
+  { id:'t17', day:6, time:'noon', dayTheme:'Les obstacles — et leurs solutions', sub:'Résister à l\'ennemi', ref:'Jacques 4:7',
+    lsg21:`Soumettez-vous donc à Dieu ; <span class="key">résistez au diable, et il fuira loin de vous</span>.`,
+    sem:`Soumettez-vous donc à Dieu, <span class="key">résistez au diable, et il fuira loin de vous</span>.`,
+    teaching:`Ce verset est d'une précision chirurgicale. Il y a deux verbes, dans un ordre non interchangeable.\n\n<em>Premier verbe : se soumettre à Dieu.</em> Sans cette soumission, la résistance n'a aucune autorité. C'est la position juridique qui rend la résistance possible.\n\n<em>Deuxième verbe : résister au diable.</em> Le grec <em>anthistēmi</em> signifie « se tenir contre, s'opposer activement ». Ce n'est pas passif. Et le résultat est garanti : « il <em>fuira</em> ». Pas « il pourrait fuir » — il fuira.\n\nQuand un symptôme revient, ne le subissez pas comme une fatalité. Soumettez-vous à Dieu, puis adressez-vous directement à l'esprit qui se tient derrière (s'il y en a un) et déclarez votre position : « Je suis racheté. Au nom de Jésus, je te résiste. Tu pars. » Et il part.`,
+    confession:`Je suis soumis à Dieu. Au nom de Jésus, je résiste à l'ennemi et à toute maladie qui veut s'installer en moi. Et il fuit loin de moi.` },
+
+  { id:'t18', day:6, time:'evening', dayTheme:'Les obstacles — et leurs solutions', sub:'Le pardon qui libère', ref:'Matthieu 6:14-15',
+    lsg21:`<span class="key">Si vous pardonnez aux hommes leurs fautes</span>, votre Père céleste vous pardonnera aussi ; mais si vous ne pardonnez pas aux hommes, votre Père ne vous pardonnera pas non plus vos fautes.`,
+    sem:`En effet, <span class="key">si vous pardonnez aux autres leurs fautes</span>, votre Père céleste vous pardonnera aussi. Mais si vous ne pardonnez pas aux autres, votre Père ne vous pardonnera pas non plus vos fautes.`,
+    teaching:`Jésus relie ici, au cœur même du Notre Père, le pardon que nous donnons et celui que nous recevons. Et la médecine spirituelle moderne — confirmée par bien des témoignages — atteste que le non-pardon est l'un des blocages les plus fréquents à la guérison.\n\nDerek Prince racontait avoir vu littéralement des centaines de personnes dont la maladie persistait jusqu'au moment où elles ont décidé de pardonner — souvent à un parent, un conjoint, un employeur, parfois à elles-mêmes ou à Dieu. Le pardon libère.\n\nLe pardon n'est pas un sentiment qu'on attend. C'est une décision qu'on prend, par obéissance, et le sentiment suit. Si quelqu'un vous a blessé profondément, prenez maintenant la décision : « Au nom de Jésus, je choisis de te pardonner. Je te libère, et je me libère. » C'est souvent la clé qui débloque la guérison.`,
+    confession:`Au nom de Jésus, je pardonne. Je libère ceux qui m'ont blessé, et je suis libéré. Aucun ressentiment n'a plus de droit en moi.` },
+
+  /* DAY 7 — Santé divine */
+  { id:'t19', day:7, time:'morning', dayTheme:'Santé divine — marcher dans la plénitude', sub:'L\'Esprit qui vivifie', ref:'Romains 8:11',
+    lsg21:`Et si l'Esprit de celui qui a ressuscité Jésus d'entre les morts habite en vous, celui qui a ressuscité Christ d'entre les morts <span class="key">rendra aussi la vie à votre corps mortel par son Esprit qui habite en vous</span>.`,
+    sem:`Et si l'Esprit de celui qui a ressuscité Jésus habite en vous, celui qui a ressuscité Christ d'entre les morts <span class="key">donnera aussi la vie à votre corps mortel par son Esprit qui habite en vous</span>.`,
+    teaching:`Paul fait ici une promesse vertigineuse : la <em>même</em> puissance qui a ressuscité Jésus d'entre les morts — la résurrection elle-même — habite dans le corps de chaque croyant rempli du Saint-Esprit. Et elle est <em>active</em> : elle « rend la vie » au corps mortel, au présent.\n\nLe verbe grec <em>zōopoiēsei</em> signifie « faire vivre, donner la vie » — c'est la vie de la résurrection, <em>zoe</em>. Pas seulement empêcher la mort, mais infuser une vie active et vivifiante.\n\nKenneth Hagin enseignait : « L'Esprit qui est en vous est plus grand que toute maladie qui voudrait s'attaquer à vous. » Vous n'attendez pas une guérison à venir d'ailleurs — la source est déjà <em>au-dedans</em>. Quand vous priez pour votre corps, vous coopérez avec un Esprit qui est déjà à l'œuvre.`,
+    confession:`L'Esprit de la résurrection habite en moi. Sa vie circule dans chacune de mes cellules. Mon corps mortel est vivifié par sa puissance.` },
+
+  { id:'t20', day:7, time:'noon', dayTheme:'Santé divine — marcher dans la plénitude', sub:'La volonté de Dieu', ref:'3 Jean 2',
+    lsg21:`Bien-aimé, je souhaite que tu prospères à tous égards et <span class="key">sois en bonne santé, comme prospère l'état de ton âme</span>.`,
+    sem:`Cher ami, je souhaite que tu prospères à tous égards et <span class="key">sois en bonne santé, comme ton âme prospère</span> déjà.`,
+    teaching:`Jean, sous l'inspiration du Saint-Esprit, exprime ici le <em>désir explicite</em> de Dieu pour son enfant : que vous soyez en bonne santé. C'est l'un des très rares versets où la volonté de Dieu pour la santé est formulée comme un souhait personnel adressé directement au croyant.\n\nOral Roberts citait constamment ce verset comme la base biblique du concept de « santé divine » : non pas seulement guérir quand on est malade, mais <em>marcher</em> quotidiennement dans une santé qui vient de Dieu.\n\nNotez la corrélation : « comme prospère ton âme ». La santé du corps est intimement liée à celle de l'âme. C'est pourquoi nourrir l'âme de la Parole, du pardon, de la paix, de la louange, n'est pas un luxe spirituel — c'est aussi une stratégie de santé physique.`,
+    confession:`La volonté de Dieu pour moi est la santé. Mon âme prospère dans la Parole, et mon corps prospère avec elle. Je marche en santé.` },
+
+  { id:'t21', day:7, time:'evening', dayTheme:'Santé divine — marcher dans la plénitude', sub:'La déclaration de vie', ref:'Psaume 118:17',
+    lsg21:`<span class="key">Je ne mourrai pas, je vivrai</span>, et je raconterai les œuvres de l'Éternel.`,
+    sem:`<span class="key">Non, je ne mourrai pas, je vivrai</span> et je raconterai les œuvres de l'Éternel.`,
+    teaching:`Ce verset est l'une des déclarations les plus puissantes de toute la Bible. C'est une <em>confession</em> au sens le plus fort : un homme qui se trouve face à la mort déclare la vie.\n\nLa structure hébraïque est intentionnelle : « Je ne mourrai <em>pas</em> » — refus catégorique. « Je vivrai » — déclaration positive. Et puis : « je raconterai les œuvres de l'Éternel » — un projet, un futur, une raison de vivre.\n\nVous arrivez au terme du traitement intensif. Tenez ferme cette déclaration : <em>je vivrai, et je raconterai</em>. Demain commence la phase de convalescence — sept jours de plus pour ancrer la guérison, résister aux symptômes récurrents, et marcher dans la santé divine. Tenez la déclaration. Le témoignage qui vient sera une bénédiction pour beaucoup d'autres.`,
+    confession:`Je ne mourrai pas, je vivrai. Et je raconterai les œuvres de mon Dieu. Ma vie est entre ses mains, et il me garde en santé.` },
+];
+
+const VERSES_CONVALESCENCE = [
+  /* DAY 8 — Garder sa guérison */
+  { id:'c01', day:8, time:'morning', dayTheme:'Garder sa guérison — assurance', sub:'Ne pas relâcher', ref:'Hébreux 10:35-36',
+    lsg21:`<span class="key">N'abandonnez donc pas votre assurance</span>, qui est porteuse d'une grande récompense. Oui, vous avez besoin de persévérance pour accomplir la volonté de Dieu et obtenir ainsi ce qui vous est promis.`,
+    sem:`<span class="key">N'abandonnez donc pas votre assurance</span> ; elle vous promet une grande récompense. Car il vous faut de la persévérance, afin qu'après avoir accompli la volonté de Dieu vous obteniez ce qu'il a promis.`,
+    teaching:`L'auteur des Hébreux écrit à des croyants tentés d'abandonner. Le mot grec <em>parrēsia</em> — traduit par « assurance » — désigne la hardiesse, le droit de parler librement, la confiance qu'on a devant Dieu.\n\nLa convalescence est le moment où l'assurance est mise à l'épreuve. Le pic de foi des sept premiers jours retombe ; les symptômes peuvent revenir tester. C'est précisément le moment de <em>ne pas relâcher</em>.\n\nDerek Prince comparait la guérison à une plante : la phase intensive est la plantation ; la convalescence, l'arrosage quotidien. Sans le second, la première ne porte pas de fruit. Tenez ferme. La récompense vient pour celui qui persévère.`,
+    confession:`Je ne relâche pas mon assurance. Ce que Dieu a commencé, Il l'achève. Je persévère, et je reçois la pleine récompense.` },
+
+  { id:'c02', day:8, time:'evening', dayTheme:'Garder sa guérison — assurance', sub:'Vaincre par le sang et la parole', ref:'Apocalypse 12:11',
+    lsg21:`Eux-mêmes l'ont vaincu à cause du <span class="key">sang de l'Agneau</span> et à cause de <span class="key">la parole de leur témoignage</span>, et ils n'ont pas aimé leur vie jusqu'à craindre la mort.`,
+    sem:`Mais eux, ils l'ont vaincu grâce au <span class="key">sang de l'Agneau</span> et grâce à <span class="key">leur parole de témoignage</span> ; ils n'ont pas aimé leur vie jusqu'à redouter la mort.`,
+    teaching:`Voici les deux armes nommées explicitement par l'Apocalypse pour vaincre l'accusateur : le sang de l'Agneau (ce que Christ a accompli pour nous) et la parole de notre témoignage (ce que nous déclarons à voix haute en accord avec ce qu'Il a accompli).\n\nLes deux travaillent ensemble. Le sang seul, sans le témoignage de notre bouche, reste objectif sans s'appliquer. Le témoignage seul, sans le sang, est une parole vide.\n\nC'est exactement ce que vous faites quand vous prononcez la confession à la fin de chaque comprimé. Vous mettez ensemble les deux armes : la réalité du sang versé, et la parole de votre bouche qui s'aligne sur cette réalité. C'est ainsi qu'on vainc.`,
+    confession:`Je vaincs par le sang de l'Agneau et par la parole de mon témoignage. Ces deux armes me suffisent. L'ennemi n'a aucune prise sur moi.` },
+
+  /* DAY 9 — La confession continue */
+  { id:'c03', day:9, time:'morning', dayTheme:'La confession continue', sub:'Tenir ferme', ref:'Hébreux 4:14',
+    lsg21:`Ainsi, puisque nous avons un grand-prêtre exceptionnel qui a traversé le ciel, Jésus, le Fils de Dieu, <span class="key">tenons fermement à la foi que nous proclamons</span>.`,
+    sem:`Nous avons un grand-prêtre éminent, qui a traversé les cieux, Jésus, le Fils de Dieu. <span class="key">Restons donc fermement attachés à la foi que nous proclamons</span>.`,
+    teaching:`Le mot grec <em>homologia</em> signifie « confession, profession » — littéralement « dire la même chose ». La confession biblique, c'est dire la même chose que Dieu : aligner sa bouche sur sa Parole.\n\nKenneth Hagin enseignait que la guérison se reçoit en deux temps : on la <em>croit</em> d'abord, puis on la <em>confesse</em> jusqu'à ce qu'elle se manifeste. La confession n'est pas une formule magique ; c'est l'expression vocale de la foi qui est dans le cœur.\n\nDans la convalescence, des pensées contradictoires reviendront. Le truc, c'est de ne pas leur donner votre bouche. Continuez à dire ce que dit la Parole, même quand vous ne le sentez pas. Tenir <em>fermement</em> — c'est le mot. Et le grand-prêtre, Jésus lui-même, soutient votre confession depuis le ciel.`,
+    confession:`Je tiens ferme ma confession. Je dis ce que dit la Parole, et rien d'autre. Mon grand-prêtre Jésus garantit chacune de mes paroles.` },
+
+  { id:'c04', day:9, time:'evening', dayTheme:'La confession continue', sub:'Le pouvoir de la langue', ref:'Proverbes 18:21',
+    lsg21:`<span class="key">La mort et la vie sont au pouvoir de la langue</span> ; quiconque l'aime mangera de ses fruits.`,
+    sem:`<span class="key">La langue a pouvoir de vie ou de mort</span> : ceux qui aiment se servir d'elle subiront les conséquences de ses fruits.`,
+    teaching:`Salomon n'utilise pas une métaphore poétique : il énonce une loi spirituelle. La langue a réellement un pouvoir — créateur ou destructeur, vital ou mortel — selon ce qu'elle prononce.\n\nDieu lui-même a créé l'univers par la parole : « Que la lumière soit. » L'homme, créé à son image, possède une étincelle de cette puissance créatrice par sa parole, surtout quand il s'aligne sur la Parole de Dieu.\n\nAttention donc à ce que vous dites de votre corps. Ne dites pas « ma » maladie — elle ne vous appartient pas. Ne récitez pas les mauvais pronostics comme s'ils étaient votre identité. Dites plutôt : « Mon corps fonctionne comme Dieu l'a conçu. Je suis guéri par ses meurtrissures. La vie de Christ coule en moi. » Vous mangerez le fruit de ces paroles.`,
+    confession:`Ma langue prononce la vie. Je dis sur mon corps ce que la Parole dit. Et je récolte le fruit de mes paroles : la santé.` },
+
+  /* DAY 10 — Le Saint-Esprit maintient */
+  { id:'c05', day:10, time:'morning', dayTheme:'Le Saint-Esprit maintient', sub:'Votre corps : son temple', ref:'1 Corinthiens 6:19-20',
+    lsg21:`Ne le savez-vous pas ? <span class="key">Votre corps est le temple du Saint-Esprit</span> qui est en vous et que vous avez reçu de Dieu. Vous ne vous appartenez pas à vous-mêmes, car vous avez été rachetés à un grand prix. Rendez donc gloire à Dieu dans votre corps.`,
+    sem:`Ou bien encore, ignorez-vous que <span class="key">votre corps est le temple même du Saint-Esprit</span> qui vous a été donné par Dieu et qui, maintenant, demeure en vous ? Vous ne vous appartenez donc pas à vous-mêmes. Car vous avez été rachetés à grand prix. Honorez donc Dieu dans votre corps.`,
+    teaching:`Paul change radicalement la perspective sur le corps. Il n'est pas une enveloppe accessoire ni un fardeau biologique : c'est un <em>temple</em> — un sanctuaire — habité par le Saint-Esprit lui-même.\n\nDans l'Ancien Testament, la <em>Shekinah</em>, la gloire de Dieu, habitait le Saint des Saints du temple de Jérusalem. Aujourd'hui, par la nouvelle alliance, c'est <em>votre corps</em> qui est ce sanctuaire. Le Saint-Esprit y réside.\n\nDeux conséquences immédiates. D'abord, la maladie n'a pas sa place dans le sanctuaire de Dieu — elle est, là encore, une intruse à expulser. Ensuite, prendre soin de son corps (alimentation, repos, mouvement) n'est pas de la vanité ni du luxe : c'est une forme de <em>respect</em> envers le sanctuaire que Dieu habite.`,
+    confession:`Mon corps est le temple du Saint-Esprit. Il y habite, et sa vie l'entretient. Je l'honore, je le préserve, et je marche en santé.` },
+
+  { id:'c06', day:10, time:'evening', dayTheme:'Le Saint-Esprit maintient', sub:'Cœur nouveau, esprit nouveau', ref:'Ézéchiel 36:26',
+    lsg21:`<span class="key">Je vous donnerai un cœur nouveau et je mettrai en vous un esprit nouveau</span>, j'enlèverai de votre corps le cœur de pierre et je vous donnerai un cœur de chair.`,
+    sem:`<span class="key">Je vous donnerai un cœur nouveau et je mettrai en vous un esprit nouveau</span>, j'enlèverai de votre être votre cœur de pierre et je vous donnerai un cœur de chair.`,
+    teaching:`Cette promesse de l'alliance nouvelle est l'une des plus profondes. Dieu ne se contente pas de réparer l'ancien cœur — il le <em>remplace</em>. Pas une rénovation, une transplantation.\n\nLe « cœur de pierre » dans la Bible désigne l'insensibilité aux choses de Dieu, l'endurcissement, mais aussi parfois la dureté qui résulte des blessures accumulées. Le « cœur de chair » est un cœur qui sent, qui répond, qui se laisse toucher.\n\nLa convalescence concerne aussi le cœur. Il y a souvent une dimension émotionnelle ou intérieure dans les maladies chroniques. Dieu propose ici un échange : votre vieux cœur, contre le sien. Si vous ressentez ce soir une dureté, une amertume, une fatigue intérieure — laissez-le faire ce qu'Il a promis. Le nouveau cœur n'est pas réservé au futur ; il est offert aujourd'hui.`,
+    confession:`Je reçois le cœur nouveau que Dieu m'offre. Mon esprit est renouvelé. Je laisse partir l'ancien — je marche dans la nouveauté.` },
+
+  /* DAY 11 — L'environnement de foi */
+  { id:'c07', day:11, time:'morning', dayTheme:'L\'environnement de foi', sub:'Planté près des eaux', ref:'Psaume 1:1-3',
+    lsg21:`Heureux l'homme qui ne suit pas le conseil des méchants […] mais qui trouve son plaisir dans la loi de l'Éternel et qui la médite jour et nuit ! Il est <span class="key">comme un arbre planté près d'un cours d'eau</span> : il donne son fruit en sa saison, et son feuillage ne se flétrit pas. Tout ce qu'il fait lui réussit.`,
+    sem:`Heureux l'homme qui ne suit pas les conseils des méchants […] mais qui trouve son plaisir dans la loi de l'Éternel et la médite jour et nuit. <span class="key">Il prospère comme un arbre planté près d'un cours d'eau</span> : il donne du fruit quand vient sa saison, et son feuillage ne se flétrit jamais ; tout ce qu'il fait réussit.`,
+    teaching:`L'image est précise : un arbre qui n'<em>est pas</em> près d'un cours d'eau, mais qui y est <em>planté</em>. Volontairement, intentionnellement, pour que ses racines soient toujours en contact avec la source.\n\nDans la convalescence, l'environnement spirituel devient décisif. Avec qui passez-vous votre temps ? Quelles voix écoutez-vous ? Quelle parole médite votre cœur ? Si vos racines sont plongées dans la peur, les pronostics négatifs, les conversations qui découragent — elles s'abreuvent à de mauvaises eaux.\n\nPlantez-vous délibérément près de la Parole. Tout ce qu'il fait <em>lui réussit</em>, dit le psaume — y compris la guérison qu'il cherche. Cela commence par où l'on choisit d'enraciner sa vie.`,
+    confession:`Je suis planté près des eaux vives de la Parole. Mes racines sont profondes en Dieu. Mon feuillage ne se flétrit pas — je porte du fruit en sa saison.` },
+
+  { id:'c08', day:11, time:'evening', dayTheme:'L\'environnement de foi', sub:'Aucun fléau n\'approche', ref:'Psaume 91:10-11',
+    lsg21:`<span class="key">Aucun mal ne t'arrivera, aucun fléau n'approchera de ta tente</span>, car il donnera ordre à ses anges de te garder dans toutes tes voies.`,
+    sem:`Il ne t'arrivera aucun mal et <span class="key">aucun fléau n'approchera de ta tente</span>, car il donnera des ordres à ses anges à ton sujet pour qu'ils te protègent dans toutes tes voies.`,
+    teaching:`Le Psaume 91 est l'un des grands chapitres de la protection divine. Verset après verset, il décrit un croyant entouré, gardé, mis à l'abri par Dieu lui-même.\n\nLe mot hébreu <em>negah</em> traduit « fléau » désigne aussi une maladie contagieuse, une plaie. Ce verset déclare donc explicitement que la maladie épidémique <em>n'approchera pas</em> de la demeure de celui qui se confie en Dieu.\n\nDerek Prince enseignait à confesser ce psaume comme une couverture quotidienne. Cela ne dispense pas de la sagesse — mais cela installe une protection spirituelle réelle. La promesse n'est pas vague : « aucun mal », « aucun fléau ». Tenez la déclaration sur votre maison, votre famille, votre corps.`,
+    confession:`Aucun fléau n'approche de ma tente. Les anges de l'Éternel campent autour de moi. Je marche, je dors, je vis sous sa protection.` },
+
+  /* DAY 12 — La joie comme force */
+  { id:'c09', day:12, time:'morning', dayTheme:'La joie comme force', sub:'La joie de l\'Éternel', ref:'Néhémie 8:10',
+    lsg21:`Ne vous attristez pas, car <span class="key">la joie de l'Éternel sera votre force</span>.`,
+    sem:`Ne vous attristez pas, car <span class="key">la joie que donne l'Éternel est votre force</span>.`,
+    teaching:`Néhémie parle au peuple qui pleure en réalisant à quel point il avait oublié la loi. Et Néhémie dit : non, ce n'est pas le moment du deuil. La joie de l'Éternel — pas la vôtre, pas une émotion superficielle — est une <em>force</em>.\n\nLe mot hébreu <em>maoz</em> signifie « forteresse, refuge, puissance ». La joie spirituelle est une véritable forteresse intérieure. Quand elle vous habite, l'ennemi a beaucoup plus de mal à entrer.\n\nDans la convalescence, cultivez intentionnellement la joie. Pas une joie forcée ou hypocrite — une joie qui vient de la conscience de qui Dieu est et de ce qu'Il a fait. La louange, la reconnaissance, le simple fait de se rappeler les bontés du Seigneur sont des actes de force, pas de sentimentalisme. La joie protège la guérison.`,
+    confession:`La joie de l'Éternel est ma force. Elle est ma forteresse contre tout découragement. Je choisis aujourd'hui de me réjouir en Lui.` },
+
+  { id:'c10', day:12, time:'evening', dayTheme:'La joie comme force', sub:'Un cœur joyeux', ref:'Proverbes 17:22',
+    lsg21:`<span class="key">Un cœur joyeux est un bon remède</span>, mais un esprit abattu dessèche les os.`,
+    sem:`<span class="key">Un cœur joyeux est un excellent remède</span>, mais l'esprit déprimé mine la santé.`,
+    teaching:`Salomon, dont la sagesse couvrait jusqu'à la médecine, énonce ici une vérité que la science moderne confirme : la joie a un impact physiologique réel sur le corps. Le mot hébreu pour « remède » est encore <em>marpe</em> — médicament.\n\nÀ l'inverse, « un esprit abattu dessèche les os » — la traduction littérale serait « assèche les os ». L'abattement chronique épuise la moelle, qui produit le sang, qui produit l'immunité. La connexion est physique, pas seulement spirituelle.\n\nCe n'est pas anodin. La joie est un pilier de la santé divine. C'est pourquoi cultiver la louange, le rire, la gratitude, la beauté, n'est pas une distraction du combat — c'est un <em>traitement</em>. Dieu vous donne une posologie : un cœur joyeux, à prendre matin et soir.`,
+    confession:`Mon cœur est joyeux en Christ. Cette joie est un remède pour mes os. Je rejette toute pesanteur — je vis dans l'allégresse de l'Éternel.` },
+
+  /* DAY 13 — La Parole quotidienne */
+  { id:'c11', day:13, time:'morning', dayTheme:'La Parole quotidienne', sub:'Méditer jour et nuit', ref:'Josué 1:8',
+    lsg21:`Que ce livre de la loi ne s'éloigne pas de ta bouche ! <span class="key">Médite-le jour et nuit</span> pour agir avec fidélité conformément à tout ce qui y est écrit, car c'est alors que tu auras du succès dans tes entreprises, c'est alors que tu réussiras.`,
+    sem:`Aie soin de répéter sans cesse les paroles de ce livre de la Loi ; <span class="key">médite-les jour et nuit</span> afin d'agir fidèlement selon tout ce qui y est écrit ; alors tes entreprises prospéreront et tu réussiras.`,
+    teaching:`Le mot hébreu <em>hagah</em> traduit « méditer » signifie littéralement « ruminer, marmonner, répéter à voix basse ». Ce n'est pas une réflexion silencieuse — c'est une rumination active, où la bouche prononce et le cœur absorbe.\n\nC'est exactement ce que vous avez fait pendant treize jours. Vous avez pris la Parole, prononcé les confessions à voix haute, médité les enseignements. Vous l'avez ruminée — et elle est descendue en vous.\n\nL'objet de cette ordonnance n'est pas un sprint de quatorze jours, mais l'acquisition d'une <em>habitude de vie</em>. Faites de la méditation quotidienne de la Parole un pilier permanent. Cinq minutes le matin, cinq minutes le soir, sur un seul verset bien mâché — et vous prospérerez « dans toutes vos entreprises », y compris dans la santé que Dieu maintient en vous.`,
+    confession:`Je médite la Parole jour et nuit. Elle est dans ma bouche, dans mon cœur. Et je prospère dans tout ce que j'entreprends.` },
+
+  { id:'c12', day:13, time:'evening', dayTheme:'La Parole quotidienne', sub:'La Parole accomplit', ref:'Ésaïe 55:11',
+    lsg21:`Telle est ma parole qui sort de ma bouche : <span class="key">elle ne revient pas à moi sans effet</span>, sans avoir fait ce que je désire et accompli les missions que je lui ai confiées.`,
+    sem:`Il en sera de même de ma parole qui sort de ma bouche : <span class="key">elle ne reviendra pas à moi sans effet</span>, sans avoir accompli ce que je désire et sans avoir réalisé l'œuvre pour laquelle je l'ai envoyée.`,
+    teaching:`Dieu donne ici une garantie absolue. Sa Parole — toute parole qui sort de Lui — accomplit infailliblement ce pour quoi elle a été envoyée. Ce n'est pas une promesse conditionnelle ; c'est une déclaration sur la nature même de la Parole de Dieu.\n\nQuand Dieu dit « par ses meurtrissures vous avez été guéris », cette parole est une <em>force vivante</em> envoyée dans le monde. Elle ne reviendra pas vide. Elle accomplira sa mission dans chaque vie qui la reçoit par la foi.\n\nKenneth Hagin disait : « Si la Parole de Dieu n'est pas vraie pour moi, elle n'est vraie pour personne. Et si elle est vraie pour quelqu'un, elle est vraie pour moi. » C'est l'audace de la foi. Vous avez semé la Parole pendant treize jours dans votre cœur ; elle ne reviendra pas à Dieu sans avoir accompli son œuvre en vous.`,
+    confession:`La Parole que j'ai semée ne revient pas à Dieu sans effet. Elle accomplit en moi tout ce pour quoi Il l'a envoyée. Elle est en train d'œuvrer.` },
+
+  /* DAY 14 — Témoignage et action de grâce */
+  { id:'c13', day:14, time:'morning', dayTheme:'Témoignage et action de grâce', sub:'Que les rachetés le proclament', ref:'Psaume 107:2',
+    lsg21:`<span class="key">Qu'ainsi parlent les rachetés de l'Éternel</span>, ceux qu'il a rachetés du pouvoir de l'adversaire.`,
+    sem:`<span class="key">Qu'ils le proclament, les rachetés de l'Éternel</span>, oui, ceux qu'il a libérés de la main de l'oppresseur.`,
+    teaching:`Le psalmiste donne ici une consigne directe à ceux qui ont été rachetés : <em>parlez</em>. Dites-le. Témoignez de ce que Dieu a fait.\n\nLe témoignage n'est pas un luxe pour ceux qui aiment parler de leur foi. C'est une partie intégrante de la guérison. Il scelle ce que Dieu a accompli, il fortifie votre propre cœur en réentendant l'œuvre, et il sème la foi chez ceux qui écoutent. Apocalypse 12:11 le rappelait : on vainc <em>aussi</em> par la parole de notre témoignage.\n\nQui Dieu vous appelle-t-il à informer aujourd'hui de ce qu'Il a fait pour vous ? Un proche, un collègue, une église, un groupe d'amis ? Ne le gardez pas pour vous. Quelqu'un d'autre attend, sans le savoir, d'entendre votre histoire pour oser croire la sienne.`,
+    confession:`Je suis un racheté de l'Éternel. Je proclame ce qu'Il a fait pour moi. Mon témoignage devient la foi de quelqu'un d'autre.` },
+
+  { id:'c14', day:14, time:'evening', dayTheme:'Témoignage et action de grâce', sub:'Qui guérit toutes tes maladies', ref:'Psaume 103:2-5',
+    lsg21:`Bénis l'Éternel, mon âme, et n'oublie aucun de ses bienfaits ! C'est lui qui pardonne toutes tes fautes, <span class="key">qui guérit toutes tes maladies</span>, qui rachète ta vie de la tombe, qui te couronne de bonté et de compassion, qui rassasie de biens ta vieillesse, qui te fait <span class="key">rajeunir comme l'aigle</span>.`,
+    sem:`Bénis l'Éternel, ô mon âme, et n'oublie aucun de ses bienfaits. Car c'est lui qui pardonne tous tes torts, <span class="key">qui te guérit de toute maladie</span>, qui t'arrache à la tombe. C'est lui qui te couronne d'amour, de tendresse, qui te comble de bonheur durant toute ton existence et qui <span class="key">renouvelle ta jeunesse comme celle de l'aigle</span>.`,
+    teaching:`David boucle votre ordonnance avec un chant. Cinq bienfaits sont énumérés, dans un ordre signifiant : pardon des péchés, guérison des maladies, rachat de la vie, couronnement d'amour, renouvellement de la jeunesse.\n\nLe pardon précède la guérison — et l'un et l'autre conduisent à un renouvellement total, jusqu'à « rajeunir comme l'aigle ». L'image n'est pas anodine : l'aigle vit longtemps, voit loin, vole haut. C'est l'image de la pleine vie restaurée.\n\nCette ordonnance se termine non par un rapport médical, mais par un chant. Quoi qu'il vous reste à voir s'accomplir dans le visible, bénissez l'Éternel maintenant. Il a pardonné. Il guérit. Il rachète. Il couronne. Il renouvelle. Que votre dernière dose soit une louange.`,
+    confession:`Je bénis l'Éternel pour tous ses bienfaits. Il a pardonné, Il guérit, Il renouvelle ma jeunesse comme celle de l'aigle. Gloire à mon Dieu.` },
+];
+
+const ALL_VERSES = [...VERSES_TREATMENT, ...VERSES_CONVALESCENCE];
+
+/* ---------- DIAGNOSTIC OPTIONS ---------- */
+const DIAG_LEVEL1 = [
+  { key:'corps', ico:'❀', label:'Guérison physique (corps)' },
+  { key:'mental', ico:'☀', label:'Paix intérieure et libération mentale' },
+  { key:'volonté', ico:'✦', label:"Libération d'une addiction ou d'un bondage" },
+  { key:'cœur', ico:'♡', label:'Guérison émotionnelle et du cœur brisé' },
+  { key:'proche', ico:'☘', label:'Guérison et protection pour un proche' },
+  { key:'santé', ico:'✚', label:'Santé globale et prévention' },
+];
+const DIAG_LEVEL2 = {
+  corps:[
+    {key:'cœur',label:'Cœur, circulation, sang'},
+    {key:'nerveux',label:'Système nerveux (cerveau, nerfs)'},
+    {key:'os_muscles',label:'Os, muscles, articulations'},
+    {key:'poumons',label:'Poumons et respiration'},
+    {key:'digestif',label:'Foie, reins, système digestif'},
+    {key:'hormonal',label:'Système hormonal (thyroïde, diabète…)'},
+    {key:'immunitaire',label:'Système immunitaire'},
+    {key:'yeux_oreilles_peau',label:'Yeux, oreilles, peau'},
+    {key:'fertilité',label:'Fertilité et système reproductif'},
+    {key:'douleur_chronique',label:'Douleurs chroniques'},
+    {key:'autre',label:'Je ne sais pas / Autre'},
+  ],
+  mental:[
+    {key:'anxiété',label:'Anxiété, peurs, panique'},
+    {key:'dépression',label:'Tristesse profonde, dépression'},
+    {key:'insomnie',label:'Sommeil perturbé, insomnie'},
+    {key:'pensée',label:'Pensées intrusives, ruminations'},
+    {key:'autre',label:'Autre'},
+  ],
+  volonté:[
+    {key:'addiction',label:'Addiction (substance, comportement)'},
+    {key:'compulsion',label:'Compulsions, habitudes destructrices'},
+    {key:'autre',label:'Autre forme de bondage'},
+  ],
+  cœur:[
+    {key:'trauma',label:'Trauma, blessure profonde'},
+    {key:'deuil',label:'Deuil, perte'},
+    {key:'rejet',label:'Rejet, abandon'},
+    {key:'amertume',label:'Amertume, ressentiment'},
+    {key:'autre',label:'Autre'},
+  ],
+  proche:[
+    {key:'douleur_chronique',label:'Douleur ou maladie d\'un proche'},
+    {key:'protection',label:'Protection et paix pour la famille'},
+    {key:'autre',label:'Autre'},
+  ],
+  santé:[
+    {key:'prévention',label:'Marcher dans la santé divine'},
+  ],
+};
+
+const CATEGORY_VERSES = {
+  'cœur':['Ézéchiel 36:26','Psaume 103:3','Ésaïe 53:5','Jérémie 30:17','Psaume 147:3'],
+  'nerveux':['Ésaïe 26:3','Philippiens 4:6-7','2 Timothée 1:7','Jean 14:27','Marc 9:25'],
+  'os_muscles':['Luc 13:11-13','Psaume 6:2','Proverbes 3:8','Actes 3:6-8','Ésaïe 35:6'],
+  'poumons':['Ézéchiel 37:5','Genèse 2:7','Job 33:4','Psaume 150:6','Actes 17:25'],
+  'digestif':['Exode 23:25','Proverbes 3:8','Psaume 103:5','1 Timothée 5:23','Matthieu 15:11'],
+  'hormonal':['Psaume 103:5','Ésaïe 40:31','Proverbes 4:22','Jérémie 17:14','Exode 15:26'],
+  'immunitaire':['Actes 10:38','Psaume 91:10','1 Pierre 2:24','Ésaïe 54:17','Psaume 34:19'],
+  'yeux_oreilles_peau':['Matthieu 11:5','Ésaïe 35:5','Marc 8:22-25','Actes 9:18','Ésaïe 29:18'],
+  'fertilité':['Exode 23:26','Psaume 113:9','Genèse 21:1-2','Luc 1:37','1 Samuel 1:27'],
+  'douleur_chronique':['Ésaïe 53:4-5','1 Pierre 2:24','Psaume 34:19','Ésaïe 41:10','Matthieu 11:28'],
+  'anxiété':['Philippiens 4:6-7','1 Pierre 5:7','Matthieu 6:34','Ésaïe 41:10','Jean 14:27'],
+  'dépression':['Psaume 34:18','Ésaïe 61:1-3','Psaume 42:11','Néhémie 8:10','Jérémie 29:11'],
+  'addiction':['Jean 8:36','Galates 5:1','Romains 6:14','2 Corinthiens 5:17','Philippiens 4:13'],
+  'compulsion':['Galates 5:1','Romains 6:14','2 Corinthiens 5:17','Philippiens 4:13','Jean 8:36'],
+  'trauma':['Ésaïe 61:1-3','Psaume 147:3','Psaume 34:18','Jérémie 31:3','Ésaïe 43:18-19'],
+  'deuil':['Psaume 34:18','Apocalypse 21:4','Matthieu 5:4','Ésaïe 61:1-3','2 Corinthiens 1:3-4'],
+  'rejet':['Psaume 27:10','Éphésiens 1:5-6','Ésaïe 49:15-16','Jérémie 31:3','Romains 8:38-39'],
+  'amertume':['Éphésiens 4:31-32','Hébreux 12:15','Matthieu 6:14-15','Colossiens 3:13','Romains 12:19'],
+  'pensée':['2 Corinthiens 10:5','Philippiens 4:8','Romains 12:2','Ésaïe 26:3','2 Timothée 1:7'],
+  'insomnie':['Psaume 4:8','Psaume 127:2','Proverbes 3:24','Matthieu 11:28','Philippiens 4:7'],
+  'protection':['Psaume 91','Psaume 121','Ésaïe 54:17','Proverbes 18:10','2 Thessaloniciens 3:3'],
+  'prévention':['Psaume 91','3 Jean 2','Proverbes 4:20-22','Exode 15:26','Romains 8:11'],
+  'autre':['Ésaïe 53:4-5','1 Pierre 2:24','Exode 15:26','Actes 10:38','Psaume 103:2-5'],
+};
+
+/* ---------- VERSION ---------- */
+const APP_VERSION = '1.5.0';
+
+/* ---------- STATE ---------- */
+const STATE_KEY = 'godsmedicine_v1';
+const defaultState = {
+  diagnostic:null,            // {level1, level2}
+  startedAt:null,
+  currentPillIndex:0,         // 0..34 (21 treatment + 14 convalescence)
+  takenPills:[],              // ids
+  alarms:{
+    morning:{enabled:true, time:'07:00'},
+    noon:{enabled:true, time:'13:00'},
+    evening:{enabled:true, time:'21:00'},
+  },
+  memo:{},                    // ref -> {level:0|1|2|3, due: timestamp, lastSeen}
+  memoVersion:'lsg',          // 'lsg' or 'sem' — version biblique pour la mémorisation
+  fontScale:1,
+  theme:'dark',               // 'dark' or 'light' — dark is default
+};
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STATE_KEY);
+    if(!raw) return structuredClone(defaultState);
+    return Object.assign(structuredClone(defaultState), JSON.parse(raw));
+  }catch(e){ return structuredClone(defaultState); }
+}
+function saveState(){
+  try{ localStorage.setItem(STATE_KEY, JSON.stringify(state)); }catch(e){}
+}
+function applyFontScale(){
+  const s = state.fontScale || 1;
+  document.documentElement.style.fontSize = (16 * s) + 'px';
+}
+function applyTheme(theme){
+  const t = (theme === 'light') ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content', t === 'light' ? '#F7F3EC' : '#0F0E1A');
+}
+let state = loadState();
+applyTheme(state.theme);
+applyFontScale();
+
+/* ---------- ROUTING ---------- */
+const screens = ['home','diagnostic','pill','memorization','settings','about'];
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const target = document.getElementById('screen-'+name);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.nav===name);
+  });
+  if(name==='home') renderHome();
+  if(name==='diagnostic') renderDiagnostic(1);
+  if(name==='pill') renderPill();
+  if(name==='memorization') renderMemo();
+  if(name==='settings') renderSettings();
+  if(name==='about') renderAbout();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+document.addEventListener('click', e=>{
+  const nav = e.target.closest('[data-nav]');
+  if(nav){ showScreen(nav.dataset.nav); }
+});
+
+/* ---------- HOME ---------- */
+function renderHome(){
+  const actions = document.getElementById('home-actions');
+  const hasStarted = state.startedAt !== null;
+  const isComplete = state.currentPillIndex >= ALL_VERSES.length;
+  let html = '';
+  if(!hasStarted){
+    html += `<div class="intro-blurb">Un outil pour le Corps de Christ, fondé sur les enseignements complémentaires de Kenneth E. Hagin, Derek Prince et Oral Roberts — trois serviteurs miraculeusement délivrés de maladies incurables. Familiarisez-vous avec les principes et les versets dès maintenant, avant d'en avoir besoin.</div>`;
+    html += `<button class="intro-link" data-nav="about">En savoir plus →</button>`;
+    html += `<button class="btn btn-primary btn-block" data-nav="diagnostic">Commencer par un diagnostic</button>`;
+  } else if(isComplete){
+    html += `<button class="btn btn-gold btn-block" data-nav="pill">Revoir mon parcours</button>`;
+    html += `<button class="btn btn-primary btn-block" data-nav="memorization">Mémoriser les versets</button>`;
+  } else {
+    const v = ALL_VERSES[state.currentPillIndex];
+    const currentDay = Math.ceil((state.currentPillIndex + 1) / 3);
+    const totalDays = 14;
+    const isConvalescence = currentDay > 7;
+    const tMeta = TIME_META[v.time];
+    const phaseLabel = isConvalescence ? 'Convalescence' : 'Traitement';
+    const phasePillClass = isConvalescence ? 'pill gold' : 'pill teal';
+    html += `
+      <div class="day-indicator">
+        <div class="day-title">JOUR ${currentDay}<span class="day-total"> / ${totalDays}</span></div>
+        <div class="day-pills">
+          <span class="${phasePillClass}">${phaseLabel}</span>
+          <span class="pill ${tMeta.cls}"><span class="pill-time-icon">${tMeta.ico}</span>&nbsp;${tMeta.label}</span>
+        </div>
+        <div class="progress-bar"><span style="width:${(currentDay/totalDays)*100}%"></span></div>
+        <p class="day-caption">Comprimé ${state.currentPillIndex+1} / ${ALL_VERSES.length}</p>
+      </div>`;
+    html += `<button class="btn btn-primary btn-block" data-nav="pill">Reprendre mon traitement</button>`;
+    html += `<button class="btn btn-ghost btn-block" data-nav="memorization">Aller à la mémorisation</button>`;
+  }
+  html += `<button class="btn btn-ghost btn-block" data-nav="settings">Paramètres et alarmes</button>`;
+  actions.innerHTML = html;
+}
+
+/* ---------- DIAGNOSTIC ---------- */
+let diagDraft = { level1:null, level2:null };
+function renderDiagnostic(step){
+  const c = document.getElementById('diag-content');
+  const indicator = document.getElementById('diag-steps');
+  indicator.querySelectorAll('span').forEach((s,i)=>s.classList.toggle('active', i<step));
+  if(step===1){
+    c.innerHTML = `
+      <h2 class="diag-question">Quel héritage voulez-vous recevoir aujourd'hui&nbsp;?</h2>
+      <p class="diag-hint">Choisissez le domaine principal de votre attente</p>
+      <div class="option-list">
+        ${DIAG_LEVEL1.map(o=>`
+          <button class="option" data-level1="${o.key}">
+            <span class="ico">${o.ico}</span>
+            <span>${o.label}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+    c.querySelectorAll('[data-level1]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        diagDraft.level1 = b.dataset.level1;
+        renderDiagnostic(2);
+      });
+    });
+  } else if(step===2){
+    const opts = DIAG_LEVEL2[diagDraft.level1] || [];
+    c.innerHTML = `
+      <h2 class="diag-question">Dans quel domaine précisément&nbsp;?</h2>
+      <p class="diag-hint">Pour personnaliser votre ordonnance</p>
+      <div class="option-list">
+        ${opts.map(o=>`
+          <button class="option" data-level2="${o.key}">
+            <span class="ico">·</span>
+            <span>${o.label}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="pill-nav">
+        <button class="btn btn-ghost btn-block" id="diag-back">Retour</button>
+      </div>
+    `;
+    c.querySelectorAll('[data-level2]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        diagDraft.level2 = b.dataset.level2;
+        renderDiagnostic(3);
+      });
+    });
+    document.getElementById('diag-back').addEventListener('click', ()=>renderDiagnostic(1));
+  } else if(step===3){
+    const refs = CATEGORY_VERSES[diagDraft.level2] || CATEGORY_VERSES['autre'];
+    c.innerHTML = `
+      <div class="card card-pad-lg stagger">
+        <span class="pill gold" style="align-self:center">Réassurance</span>
+        <h2 class="reassure-title" style="margin-top:10px">Votre guérison est inscrite dans la rédemption de Christ</h2>
+        <div class="gold-line" style="margin:14px auto 4px"></div>
+        <p style="text-align:center;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;margin-bottom:8px">
+          Cinq versets d'ancrage pour votre situation
+        </p>
+        <ul class="verse-list">
+          ${refs.map(r=>`<li><span class="ref-tag">${r}</span><em>Verset d'ancrage à méditer</em></li>`).join('')}
+        </ul>
+        <p class="heb-quote">« Jésus guérissait toutes les maladies. Il est le même hier, aujourd'hui et éternellement. »<br><span style="font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-dark);font-weight:700;font-style:normal;font-family:'Lato',sans-serif">Hébreux 13:8</span></p>
+        <button class="btn btn-gold btn-block" id="diag-confirm" style="margin-top:18px">Commencer mon traitement de 14 jours</button>
+      </div>
+    `;
+    document.getElementById('diag-confirm').addEventListener('click', ()=>{
+      state.diagnostic = { ...diagDraft };
+      state.startedAt = Date.now();
+      state.currentPillIndex = 0;
+      saveState();
+      showScreen('pill');
+    });
+  }
+}
+
+/* ---------- PILL (TREATMENT/CONVALESCENCE) ---------- */
+const TIME_META = {
+  morning:{ico:'☀', label:'Matin', cls:'morning'},
+  noon:{ico:'◉', label:'Midi', cls:'noon'},
+  evening:{ico:'☾', label:'Soir', cls:'evening'},
+};
+function renderPill(){
+  const c = document.getElementById('pill-content');
+  const phaseTitle = document.getElementById('pill-phase-title');
+  const idx = state.currentPillIndex;
+  const total = ALL_VERSES.length;
+  if(idx >= total){
+    phaseTitle.textContent = 'Parcours achevé';
+    document.getElementById('pill-progress').style.width = '100%';
+    c.innerHTML = `
+      <div class="card card-pad-lg" style="text-align:center">
+        <div style="font-size:3rem;color:var(--gold);margin-bottom:8px">✦</div>
+        <h2 class="pill-title" style="text-align:center">Vous avez achevé l'ordonnance</h2>
+        <div class="gold-line" style="margin:14px auto"></div>
+        <p style="color:var(--ink-soft);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;margin:14px 0">
+          « Bénis l'Éternel, mon âme, et n'oublie aucun de ses bienfaits. »
+        </p>
+        <p style="font-size:.85rem;color:var(--ink-soft)">Continuez à mémoriser les versets et à marcher dans la santé divine.</p>
+        <button class="btn btn-primary btn-block" data-nav="memorization" style="margin-top:18px">Aller à la mémorisation</button>
+        <button class="btn btn-ghost btn-block" id="pill-restart" style="margin-top:8px">Recommencer un parcours</button>
+      </div>`;
+    document.getElementById('pill-restart').addEventListener('click', ()=>{
+      state.currentPillIndex = 0;
+      state.takenPills = [];
+      saveState();
+      renderPill();
+    });
+    return;
+  }
+  const v = ALL_VERSES[idx];
+  const tMeta = TIME_META[v.time];
+  const isConv = v.day > 7;
+  phaseTitle.textContent = isConv ? `Convalescence — Jour ${v.day-7}` : `Traitement — Jour ${v.day}`;
+  document.getElementById('pill-progress').style.width = ((idx+1)/total*100)+'%';
+
+  // Personalized note (1 per day, on morning pill)
+  let personal = '';
+  if(state.diagnostic && v.time==='morning'){
+    const refs = CATEGORY_VERSES[state.diagnostic.level2] || [];
+    if(refs.length){
+      const ref = refs[v.day % refs.length];
+      personal = `<div class="card" style="background:linear-gradient(180deg,var(--honey-1),var(--honey-2));border-color:var(--honey-border);margin-top:12px">
+        <span class="pill gold">Personnalisé</span>
+        <p style="margin-top:8px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--brand-fg)">
+          Pour votre attente spécifique, ancrez aussi : <strong>${ref}</strong>
+        </p>
+      </div>`;
+    }
+  }
+
+  c.innerHTML = `
+    <div class="card card-pad-lg stagger">
+      <div class="pill-meta">
+        <span class="pill-num">Comprimé <strong>${idx+1}</strong> / ${total}</span>
+        <span class="pill ${tMeta.cls}"><span class="pill-time-icon">${tMeta.ico}</span>&nbsp;${tMeta.label}</span>
+      </div>
+      <h2 class="pill-title">${v.dayTheme}</h2>
+      <p class="pill-subtitle">${v.sub}</p>
+      <div class="gold-line"></div>
+
+      <div class="section-label">Principe actif</div>
+      <div class="verse-wrapper">
+        <div class="verse-tabs">
+          <button class="verse-tab active" data-ver="lsg">Louis Segond 21</button>
+          <button class="verse-tab" data-ver="sem">Le Semeur</button>
+        </div>
+        <div class="verse-panel active" data-panel="lsg">
+          <p class="verse-text">${v.lsg21}</p>
+          <p class="verse-ref">${v.ref}</p>
+        </div>
+        <div class="verse-panel" data-panel="sem">
+          <p class="verse-text">${v.sem}</p>
+          <p class="verse-ref">${v.ref}</p>
+        </div>
+      </div>
+      <p class="legend-mini">Les mots en gras sont ceux sur lesquels l'enseignement porte particulièrement.</p>
+
+      <div class="divider"></div>
+
+      <div class="section-label">Notice</div>
+      <div class="teaching">${v.teaching.split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div>
+
+      <div class="divider"></div>
+
+      <div class="section-label">Posologie</div>
+      <p class="confession">${v.confession}</p>
+
+      ${personal}
+
+      <button class="btn btn-ghost btn-block btn-sm" id="pill-memorize" style="margin-top:14px">✦ Mémoriser ce verset</button>
+
+      <div class="pill-nav">
+        ${idx>0?`<button class="btn btn-ghost" id="pill-prev">‹ Précédent</button>`:''}
+        <button class="btn btn-primary" id="pill-take">J'ai pris ce comprimé</button>
+      </div>
+      <button class="btn btn-ghost btn-block btn-sm" id="pill-later" style="margin-top:8px">Je reviendrai sur ce comprimé</button>
+    </div>
+  `;
+  const takeBtn = document.getElementById('pill-take');
+  if(takeBtn){
+    takeBtn.addEventListener('click', ()=>{
+      if(!state.takenPills.includes(v.id)) state.takenPills.push(v.id);
+      const wasEvening = v.time === 'evening';
+      const wasLast = (idx + 1) >= total;
+      state.currentPillIndex = idx + 1;
+      saveState();
+      toast('Comprimé pris. Que la Parole agisse en vous.');
+      renderPillConfirmation(wasEvening, wasLast);
+    });
+  }
+  const memorizeBtn = document.getElementById('pill-memorize');
+  if(memorizeBtn){
+    memorizeBtn.addEventListener('click', ()=>{
+      memoTargetRef = v.ref;
+      showScreen('memorization');
+    });
+  }
+  const prevBtn = document.getElementById('pill-prev');
+  if(prevBtn){
+    prevBtn.addEventListener('click', ()=>{
+      state.currentPillIndex = Math.max(0, idx - 1);
+      saveState();
+      renderPill();
+    });
+  }
+  const laterBtn = document.getElementById('pill-later');
+  if(laterBtn){
+    laterBtn.addEventListener('click', ()=>{
+      toast('Vous pourrez le reprendre à tout moment.');
+      showScreen('home');
+    });
+  }
+  /* Verse version toggle */
+  c.querySelectorAll('.verse-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      const ver = tab.dataset.ver;
+      c.querySelectorAll('.verse-tab').forEach(t=>t.classList.toggle('active',t.dataset.ver===ver));
+      c.querySelectorAll('.verse-panel').forEach(p=>p.classList.toggle('active',p.dataset.panel===ver));
+    });
+  });
+}
+
+function renderPillConfirmation(wasEvening, wasLast){
+  const c = document.getElementById('pill-content');
+  const total = ALL_VERSES.length;
+  document.getElementById('pill-progress').style.width = ((state.currentPillIndex)/total*100)+'%';
+  let primaryLabel, primaryAction;
+  if(wasLast){
+    primaryLabel = 'Voir mon parcours achevé';
+    primaryAction = 'next';
+  } else if(wasEvening){
+    primaryLabel = 'Reprendre demain';
+    primaryAction = 'home';
+  } else {
+    primaryLabel = 'Comprimé suivant →';
+    primaryAction = 'next';
+  }
+  c.innerHTML = `
+    <div class="card card-pad-lg pill-confirm">
+      <div class="check">✓</div>
+      <h2>Comprimé pris</h2>
+      <p class="sub">Que la Parole agisse en vous.</p>
+      <div class="gold-line" style="margin:20px auto 22px"></div>
+      <div class="action-stack" style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary btn-block" id="confirm-primary">${primaryLabel}</button>
+        <button class="btn btn-ghost btn-block" id="confirm-home">Retour à l'accueil</button>
+      </div>
+    </div>`;
+  document.getElementById('confirm-primary').addEventListener('click', ()=>{
+    if(primaryAction === 'next'){
+      renderPill();
+    } else {
+      showScreen('home');
+    }
+  });
+  document.getElementById('confirm-home').addEventListener('click', ()=>{
+    showScreen('home');
+  });
+}
+
+/* ---------- MEMORIZATION ---------- */
+let memoSession = { queue:[], idx:0, flipped:false };
+let memoMode = 'flashcard'; /* 'flashcard' or 'browse' */
+let memoTargetRef = null; /* If set, renderMemo positions on this verse */
+function buildMemoQueue(){
+  const now = Date.now();
+  const due = [], later = [];
+  ALL_VERSES.forEach(v=>{
+    const m = state.memo[v.ref];
+    if(!m){ due.push(v); }
+    else if(!m.due || m.due <= now){ due.push(v); }
+    else { later.push(v); }
+  });
+  return { due, later };
+}
+function renderMemo(){
+  const c = document.getElementById('memo-content');
+  const total = ALL_VERSES.length;
+  const mastered = Object.values(state.memo).filter(m=>m.level>=3).length;
+  const learning = Object.values(state.memo).filter(m=>m.level>0 && m.level<3).length;
+  const ver = state.memoVersion === 'sem' ? 'sem' : 'lsg';
+  const verLabel = ver === 'sem' ? 'Semeur' : 'LSG21';
+
+  /* If target ref is set, force flashcard mode */
+  if(memoTargetRef){
+    memoMode = 'flashcard';
+  }
+
+  /* Mode toggle */
+  let html = `
+    <div class="memo-stats">
+      <div class="stat"><div class="num">${mastered}</div><div class="lbl">Maîtrisés</div></div>
+      <div class="stat"><div class="num">${learning}</div><div class="lbl">En cours</div></div>
+      <div class="stat"><div class="num">${total}</div><div class="lbl">Total</div></div>
+    </div>
+    <div class="browse-toggle" style="margin-top:14px">
+      <button class="${ver==='lsg'?'active':''}" id="ver-lsg">Louis Segond 21</button>
+      <button class="${ver==='sem'?'active':''}" id="ver-sem">Semeur</button>
+    </div>
+    <div class="browse-toggle">
+      <button class="${memoMode==='flashcard'?'active':''}" id="mode-flash">Flashcards</button>
+      <button class="${memoMode==='browse'?'active':''}" id="mode-browse">Parcourir tout</button>
+    </div>`;
+
+  if(memoMode==='browse'){
+    /* Browse mode — scrollable list of all verses */
+    html += `<div class="verse-browser">`;
+    ALL_VERSES.forEach((v,i)=>{
+      const dayLabel = v.day<=7 ? `Jour ${v.day}` : `Conv. J${v.day-7}`;
+      const text = ver === 'sem' ? v.sem : v.lsg21;
+      html += `<div class="verse-browser-item" data-browse="${i}">
+        <div class="vb-ref">${dayLabel} · ${v.ref} — ${verLabel}</div>
+        <div class="vb-theme">${v.dayTheme.split('—')[0].trim()}</div>
+        <div class="vb-text">${text}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  } else {
+    /* Flashcard mode — existing behavior */
+    const { due } = buildMemoQueue();
+    memoSession.queue = due.length ? due : ALL_VERSES;
+
+    /* Honor memoTargetRef: position on a specific verse */
+    if(memoTargetRef){
+      let targetIdx = memoSession.queue.findIndex(x => x.ref === memoTargetRef);
+      if(targetIdx === -1){
+        memoSession.queue = ALL_VERSES;
+        targetIdx = ALL_VERSES.findIndex(x => x.ref === memoTargetRef);
+      }
+      if(targetIdx !== -1){
+        memoSession.idx = targetIdx;
+        memoSession.flipped = false;
+      }
+      memoTargetRef = null;
+    }
+
+    memoSession.idx = Math.min(memoSession.idx, memoSession.queue.length-1);
+    if(memoSession.idx<0) memoSession.idx = 0;
+    const v = memoSession.queue[memoSession.idx];
+    if(!v){
+      html += `<div class="card" style="text-align:center"><h3 class="pill-title">Aucun verset à revoir</h3><p style="color:var(--ink-soft);margin-top:8px">Revenez plus tard.</p></div>`;
+    } else {
+      const dayLabel = v.day<=7 ? `Jour ${v.day}` : `Convalescence J${v.day-7}`;
+      const momentLabel = (TIME_META[v.time]||{}).label || '';
+      const momentIco = (TIME_META[v.time]||{}).ico || '';
+      const verseText = (ver === 'sem' ? v.sem : v.lsg21).replace(/<[^>]+>/g,'');
+      html += `
+        <div class="flashcard ${memoSession.flipped?'flipped':''}" id="flashcard">
+          <div class="flashcard-inner">
+            <div class="flashcard-face flashcard-front">
+              <div class="fc-context">
+                <span class="fc-day">${dayLabel}</span>
+                <span class="fc-dot">·</span>
+                <span class="fc-moment">${momentIco} ${momentLabel}</span>
+              </div>
+              <div class="ref-big">${v.ref}</div>
+              <div class="gold-line" style="background:linear-gradient(90deg,var(--gold-light),var(--gold));margin:8px auto"></div>
+              <p class="fc-theme">${v.dayTheme.split('—')[0].trim()}</p>
+              <p class="tap">Touchez pour révéler</p>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <p class="verse">${verseText}</p>
+              <div class="ref">${v.ref} — ${verLabel}</div>
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:.85rem;color:var(--ink-soft);margin-bottom:10px">${memoSession.idx+1} / ${memoSession.queue.length} à revoir</p>
+        <div class="memo-actions">
+          <button class="btn btn-ghost" data-memo="0">Je ne sais pas</button>
+          <button class="btn btn-ghost" data-memo="1">À peu près</button>
+          <button class="btn btn-gold" data-memo="3">Par cœur</button>
+        </div>`;
+    }
+  }
+
+  c.innerHTML = html;
+
+  /* Event listeners */
+  document.getElementById('ver-lsg').addEventListener('click', ()=>{
+    state.memoVersion = 'lsg'; saveState(); renderMemo();
+  });
+  document.getElementById('ver-sem').addEventListener('click', ()=>{
+    state.memoVersion = 'sem'; saveState(); renderMemo();
+  });
+  document.getElementById('mode-flash').addEventListener('click', ()=>{ memoMode='flashcard'; renderMemo(); });
+  document.getElementById('mode-browse').addEventListener('click', ()=>{ memoMode='browse'; renderMemo(); });
+
+  if(memoMode==='flashcard'){
+    const fc = document.getElementById('flashcard');
+    if(fc){
+      fc.addEventListener('click', ()=>{
+        memoSession.flipped = !memoSession.flipped;
+        fc.classList.toggle('flipped', memoSession.flipped);
+      });
+    }
+    c.querySelectorAll('[data-memo]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const lvl = parseInt(b.dataset.memo,10);
+        const days = lvl===0?1:(lvl===1?3:7);
+        const v = memoSession.queue[memoSession.idx];
+        const prev = state.memo[v.ref];
+        let level = lvl;
+        if(prev && lvl===3 && prev.level>=3) level = 4;
+        const nextDue = Date.now() + days*24*3600*1000;
+        state.memo[v.ref] = { level, due:nextDue, lastSeen:Date.now() };
+        saveState();
+        memoSession.flipped = false;
+        memoSession.idx = (memoSession.idx + 1) % memoSession.queue.length;
+        renderMemo();
+      });
+    });
+  }
+}
+
+/* ---------- SETTINGS ---------- */
+function renderSettings(){
+  const c = document.getElementById('settings-content');
+  const a = state.alarms;
+  const notifPerm = ('Notification' in window) ? Notification.permission : 'unsupported';
+  c.innerHTML = `
+    <div class="card">
+      <h3 style="font-family:'Cormorant Garamond',serif;color:var(--brand-fg);margin-bottom:6px">Horaires des comprimés</h3>
+      <p style="color:var(--ink-soft);font-size:.85rem;margin-bottom:8px">Trois rappels quotidiens correspondent aux trois prises.</p>
+      ${['morning','noon','evening'].map(t=>{
+        const meta = TIME_META[t];
+        return `
+          <div class="setting-row">
+            <div>
+              <div class="label">${meta.ico} ${meta.label}</div>
+              <div class="desc">Rappel quotidien</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <input type="time" class="time-input" data-alarm-time="${t}" value="${a[t].time}" />
+              <div class="toggle ${a[t].enabled?'on':''}" data-alarm-toggle="${t}"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 style="font-family:'Cormorant Garamond',serif;color:var(--brand-fg);margin-bottom:6px">Notifications</h3>
+      <div class="setting-row">
+        <div>
+          <div class="label">Permission du navigateur</div>
+          <div class="desc">État : ${notifPerm}</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="notif-perm">${notifPerm==='granted'?'Activée':'Activer'}</button>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="label">Tester un rappel</div>
+          <div class="desc">Envoie une notification immédiate</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="notif-test">Tester</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 style="font-family:'Cormorant Garamond',serif;color:var(--brand-fg);margin-bottom:6px">Affichage</h3>
+      <div class="setting-row">
+        <div>
+          <div class="label">Thème ${state.theme==='light'?'clair':'sombre'}</div>
+          <div class="desc">${state.theme==='light'?'Fond clair, mots-clés en bleu marine':'Fond sombre, mots-clés en or vif'}</div>
+        </div>
+        <div class="toggle ${state.theme==='light'?'on':''}" id="theme-toggle" aria-label="Basculer le thème"></div>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="label">Taille du texte</div>
+          <div class="desc">Ajustez la lisibilité des contenus</div>
+        </div>
+        <div class="font-scale-row">
+          <button id="font-minus" aria-label="Réduire">A-</button>
+          <span class="scale-label" id="font-label">${Math.round((state.fontScale||1)*100)}%</span>
+          <button id="font-plus" aria-label="Agrandir">A+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 style="font-family:'Cormorant Garamond',serif;color:var(--brand-fg);margin-bottom:6px">Parcours</h3>
+      <div class="setting-row">
+        <div>
+          <div class="label">Réinitialiser le traitement</div>
+          <div class="desc">Efface progression, prises et diagnostic</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="reset-app" style="color:var(--coral);border-color:rgba(139,58,42,.35)">Réinitialiser</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 style="font-family:'Cormorant Garamond',serif;color:var(--brand-fg);margin-bottom:6px">Application</h3>
+      <div class="setting-row">
+        <div>
+          <div class="label">Version installée</div>
+          <div class="desc">God's Medicine v${APP_VERSION}</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="check-update">Vérifier les mises à jour</button>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="label">À propos</div>
+          <div class="desc">Origine, sources, et esprit du projet</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" data-nav="about">À propos de God's Medicine</button>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      Cette application est un accompagnement spirituel. Elle ne remplace pas le suivi médical.
+      Consultez toujours votre médecin pour toute décision liée à un traitement en cours.
+    </div>
+  `;
+
+  c.querySelectorAll('[data-alarm-toggle]').forEach(t=>{
+    t.addEventListener('click', ()=>{
+      const k = t.dataset.alarmToggle;
+      state.alarms[k].enabled = !state.alarms[k].enabled;
+      saveState();
+      renderSettings();
+      scheduleAlarms();
+    });
+  });
+  c.querySelectorAll('[data-alarm-time]').forEach(i=>{
+    i.addEventListener('change', ()=>{
+      const k = i.dataset.alarmTime;
+      state.alarms[k].time = i.value;
+      saveState();
+      scheduleAlarms();
+      toast('Horaire mis à jour.');
+    });
+  });
+  document.getElementById('notif-perm').addEventListener('click', async ()=>{
+    if(!('Notification' in window)){ toast('Notifications non supportées.'); return; }
+    const p = await Notification.requestPermission();
+    if(p==='granted'){ toast('Notifications activées.'); scheduleAlarms(); }
+    renderSettings();
+  });
+  document.getElementById('notif-test').addEventListener('click', async ()=>{
+    if(!('Notification' in window)){ toast('Notifications non supportées.'); return; }
+    if(Notification.permission!=='granted'){
+      const p = await Notification.requestPermission();
+      if(p!=='granted') return;
+    }
+    new Notification("God's Medicine", {
+      body:'Heure de votre comprimé. Prenez la Parole.',
+      icon:'icons/icon-192.png',
+      silent:false,
+    });
+  });
+  document.getElementById('reset-app').addEventListener('click', ()=>{
+    confirmModal('Réinitialiser ?',
+      "Toute votre progression, vos prises et votre diagnostic seront effacés. Cette action est irréversible.",
+      ()=>{
+        state = structuredClone(defaultState);
+        saveState();
+        applyTheme(state.theme);
+        applyFontScale();
+        toast('Parcours réinitialisé.');
+        showScreen('home');
+      });
+  });
+  const checkUpdateBtn = document.getElementById('check-update');
+  if(checkUpdateBtn){
+    checkUpdateBtn.addEventListener('click', ()=>{
+      if(!('serviceWorker' in navigator)){
+        toast('Service worker non supporté.');
+        return;
+      }
+      navigator.serviceWorker.ready.then(reg=>{
+        reg.update().then(()=>toast('Recherche de mise à jour…')).catch(()=>toast('Impossible de vérifier.'));
+      }).catch(()=>toast('Service worker indisponible.'));
+    });
+  }
+  /* Font scale */
+  document.getElementById('font-minus').addEventListener('click', ()=>{
+    state.fontScale = Math.max(0.85, (state.fontScale||1) - 0.05);
+    saveState(); applyFontScale(); renderSettings();
+  });
+  document.getElementById('font-plus').addEventListener('click', ()=>{
+    state.fontScale = Math.min(1.4, (state.fontScale||1) + 0.05);
+    saveState(); applyFontScale(); renderSettings();
+  });
+  /* Theme toggle */
+  document.getElementById('theme-toggle').addEventListener('click', ()=>{
+    state.theme = (state.theme === 'light') ? 'dark' : 'light';
+    saveState(); applyTheme(state.theme); renderSettings();
+  });
+}
+
+/* ---------- ABOUT ---------- */
+function renderAbout(){
+  const c = document.getElementById('about-content');
+  c.innerHTML = `
+    <div class="card card-pad-lg stagger">
+      <span class="pill gold" style="align-self:flex-start">À propos</span>
+      <h2 class="pill-title" style="margin-top:10px">À propos de God's Medicine</h2>
+      <div class="gold-line"></div>
+      <div class="teaching">
+        <p>God's Medicine est un outil mis à la disposition du Corps de Christ pour bénéficier pleinement des privilèges acquis par l'œuvre expiatoire de Jésus-Christ. La guérison divine est un héritage&nbsp;: <span class="verse">«&nbsp;C'est par ses meurtrissures que vous avez été guéris&nbsp;»</span> (1 Pierre 2:24).</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 class="pill-title">N'attendez pas d'être malade</h3>
+      <div class="gold-line"></div>
+      <div class="teaching">
+        <p>Cette application n'est pas un recours de dernière minute. Elle est conçue pour que vous vous familiarisiez dès maintenant avec les principes de la guérison divine, que vous mémorisiez les versets bibliques et intégriez les étapes de la foi — afin d'être prêt le jour où vous en aurez besoin.</p>
+        <p><em>Le soldat ne découvre pas ses armes sur le champ de bataille.</em></p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 class="pill-title">Trois serviteurs, une même vérité</h3>
+      <div class="gold-line"></div>
+      <div class="teaching">
+        <p>God's Medicine s'appuie sur les enseignements complémentaires de trois grands ministres du XX<sup>e</sup> siècle, chacun miraculeusement délivré d'une maladie incurable à son époque&nbsp;:</p>
+        <p><em>Kenneth E. Hagin</em> — Alité 16 mois, paralysé par une malformation cardiaque et une maladie du sang incurable. Guéri en méditant la Parole de Dieu sur son lit de mort. Il nous enseigne les mécanismes précis de la foi et la Parole comme médicament quotidien.</p>
+        <p><em>Derek Prince</em> — Hospitalisé 1 an avec une maladie que les médecins ne pouvaient guérir. Guéri en prenant la Parole de Dieu comme médicament trois fois par jour pendant 3 mois. Il nous enseigne la prescription divine de Proverbes 4:20-22 et les fondements bibliques de la guérison.</p>
+        <p><em>Oral Roberts</em> — Alité plus de 5 mois (163 jours), tuberculose dans les deux poumons. Guéri instantanément lors d'une réunion d'évangélisation. Il nous enseigne la posture du cœur, le point de contact de la foi, et que «&nbsp;Dieu est un bon Dieu&nbsp;».</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 class="pill-title">Une ordonnance de 14 jours</h3>
+      <div class="gold-line"></div>
+      <div class="teaching">
+        <p>L'application structure ces enseignements en un traitement spirituel quotidien&nbsp;: versets à méditer, confessions à prononcer, principes à ancrer dans le cœur. Étudiez-les avant toute épreuve, pour qu'ils soient déjà enracinés en vous.</p>
+      </div>
+      <p class="confession" style="margin-top:14px">«&nbsp;Mon peuple périt faute de connaissance&nbsp;» — Osée 4:6.</p>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 class="pill-title">Note sur les versions bibliques</h3>
+      <div class="gold-line"></div>
+      <div class="teaching">
+        <p>Les versets sont proposés en deux traductions françaises&nbsp;: Louis Segond 21 (LSG21) et Bible du Semeur (SEM). Les enseignements et commentaires s'appuient sur les travaux originaux de Kenneth Hagin, Derek Prince et Oral Roberts, qui utilisaient principalement la King James Version (KJV) en anglais, et parfois d'autres traductions anglaises.</p>
+        <p>Il peut arriver que certains commentaires ne correspondent pas exactement au texte des versions françaises, car la traduction anglaise et la traduction française d'un même verset ne se recouvrent pas toujours mot pour mot. Par exemple, dans certains passages, un mot ou une expression répétée trois fois dans la KJV n'apparaît que deux fois dans les versions françaises. Les principes spirituels enseignés restent pleinement valides — seule la formulation littérale peut varier d'une langue à l'autre.</p>
+      </div>
+    </div>
+
+    <div class="disclaimer" style="margin-top:18px">
+      God's Medicine v${APP_VERSION}. Cette application est un accompagnement spirituel et ne remplace pas le suivi médical.
+    </div>
+  `;
+}
+
+/* ---------- ALARMS ---------- */
+let alarmTimers = [];
+function scheduleAlarms(){
+  alarmTimers.forEach(t=>clearTimeout(t));
+  alarmTimers = [];
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  const slots = ['morning','noon','evening'];
+  slots.forEach(slot=>{
+    const a = state.alarms[slot];
+    if(!a.enabled) return;
+    const [h,m] = a.time.split(':').map(Number);
+    const now = new Date();
+    const next = new Date();
+    next.setHours(h, m, 0, 0);
+    if(next.getTime() <= now.getTime()) next.setDate(next.getDate()+1);
+    const delay = next.getTime() - now.getTime();
+    const timer = setTimeout(()=>{
+      try{
+        new Notification("God's Medicine", {
+          body: `Comprimé du ${TIME_META[slot].label.toLowerCase()} — il est l'heure de prendre la Parole.`,
+          icon:'icons/icon-192.png',
+          tag:'godsmedicine-'+slot,
+        });
+      }catch(e){}
+      scheduleAlarms();
+    }, delay);
+    alarmTimers.push(timer);
+  });
+}
+
+/* ---------- HELPERS ---------- */
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+function confirmModal(title, body, onConfirm){
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').textContent = body;
+  const m = document.getElementById('modal');
+  m.classList.add('show');
+  const cancel = document.getElementById('modal-cancel');
+  const confirm = document.getElementById('modal-confirm');
+  function close(){ m.classList.remove('show'); cancel.removeEventListener('click', close); confirm.removeEventListener('click', go); }
+  function go(){ close(); onConfirm(); }
+  cancel.addEventListener('click', close);
+  confirm.addEventListener('click', go);
+}
+
+/* ---------- UPDATE BANNER ---------- */
+let updateBannerWired = false;
+function showUpdateBanner(){
+  const banner = document.getElementById('update-banner');
+  if(!banner) return;
+  banner.classList.add('show');
+  if(updateBannerWired) return;
+  updateBannerWired = true;
+  document.getElementById('update-btn').addEventListener('click', ()=>{
+    if(!('serviceWorker' in navigator)){ window.location.reload(); return; }
+    navigator.serviceWorker.ready.then(reg=>{
+      if(reg.waiting){
+        reg.waiting.postMessage({ type:'SKIP_WAITING' });
+      } else {
+        window.location.reload();
+      }
+    }).catch(()=>window.location.reload());
+  });
+}
+
+/* ---------- BOOT ---------- */
+function boot(){
+  showScreen('home');
+  scheduleAlarms();
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('service-worker.js').then(reg=>{
+      // Vérifier les mises à jour toutes les 30 minutes
+      setInterval(()=>{ try{ reg.update(); }catch(e){} }, 30 * 60 * 1000);
+
+      // Si un nouveau SW est déjà en attente au démarrage
+      if(reg.waiting && navigator.serviceWorker.controller){
+        showUpdateBanner();
+      }
+
+      // Détecter l'arrivée d'un nouveau SW
+      reg.addEventListener('updatefound', ()=>{
+        const newWorker = reg.installing;
+        if(!newWorker) return;
+        newWorker.addEventListener('statechange', ()=>{
+          if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
+            showUpdateBanner();
+          }
+        });
+      });
+    }).catch(()=>{});
+
+    // Message du SW après activation
+    navigator.serviceWorker.addEventListener('message', (event)=>{
+      if(event.data && event.data.type === 'SW_UPDATED'){
+        window.location.reload();
+      }
+    });
+
+    // Recharger quand le nouveau SW prend le contrôle
+    let reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', ()=>{
+      if(reloading) return;
+      reloading = true;
+      window.location.reload();
+    });
+  }
+}
+boot();
+</script>
+</body>
+</html>

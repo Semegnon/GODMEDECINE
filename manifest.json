@@ -1,0 +1,33 @@
+{
+  "name": "God's Medicine — Ordonnance divine",
+  "short_name": "God's Medicine",
+  "description": "Ordonnance divine de guérison en 14 jours, fondée sur la Parole.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F0E1A",
+  "theme_color": "#0F0E1A",
+  "lang": "fr",
+  "categories": ["lifestyle", "health", "books"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
